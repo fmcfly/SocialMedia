@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import mx.gob.upiicsa.dao.AmigosDao;
 import mx.gob.upiicsa.dao.LoginDao;
+import mx.gob.upiicsa.dao.MensajesDao;
 import mx.gob.upiicsa.modelo.UsuarioBean;
 
 /**

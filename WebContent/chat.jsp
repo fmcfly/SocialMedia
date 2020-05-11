@@ -1,26 +1,25 @@
-<%@page import="java.util.ArrayList"%>
 <%@page import="mx.gob.upiicsa.modelo.UsuarioBean"%>
+<%@page import="mx.gob.upiicsa.modelo.MensajeBean"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%
-    //Primero recuperamos la sesión que creamos en el LoginServlet!!!
     HttpSession sesion = request.getSession();
-    // Después de la sesion obtenemos el objeto que guardamos con el nombre "usuario"
-    								//(UsuarioBean) estamos casteando o conviritendolo a un tipo de datoa Usuario Bean
-    UsuarioBean user =(UsuarioBean) sesion.getAttribute("usuario");
-    ArrayList<UsuarioBean> listaAmigos = (ArrayList<UsuarioBean>) sesion.getAttribute("amigos");
+    ArrayList<MensajeBean> mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");
+    UsuarioBean user = (UsuarioBean) sesion.getAttribute("usuario");
     %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Social Media</title>
+
+<link rel="stylesheet" href="css/estilos.css" type="text/css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script type="text/javascript" src="javascript/funciones.js"></script>
 </head>
 <body>
-
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">SocialMedia</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -41,34 +40,29 @@
     </form>
   </div>
 </nav>
-
-<form id="amigosChat" class="container">
-	<table class="table table-dark">
-	  <thead>
-	    <tr>
-	      <th scope="col">ID</th>
-	      <th scope="col">Nombre</th>
-	      <th scope="col">Apellido</th>
-	      <th scope="col">Correo</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	  <%
-	  for(UsuarioBean amigo:listaAmigos) {
-	  %>
-		
-		 <tr onclick="friend(<%=amigo.getIdUser()%>)">
-		  		 <th scope="row"><%=amigo.getIdUser() %></th>
-		  		 <td><%=amigo.getNombre() %></td>
-		  		 <td><%=amigo.getApellido() %></td>
-		  		 <td><%=amigo.getCorreo() %></td>
-		  </tr>
-		<%}
-	  %>	    
-	  </tbody>
-	</table>
-</form>
-
-
+<div class="container">
+	<%for(MensajeBean mensaje: mensajes) {
+		if(mensaje.getIdUsuario() == user.getIdUser()){ %>
+		<div class="mensajeUsuario">
+			<div class="card border border-success " style="width: 18rem;">
+			  <div class="card-body">
+			    <p class="card-text"><%=mensaje.getTexto() %></p>
+			    
+			    <p class="card-link"><%=mensaje.getFecha() %></p>
+			  </div>
+			</div>		
+		</div>
+		<%}else{%>
+	
+		<div class="card border border-primary" style="width: 18rem;">
+		  <div class="card-body">
+		    <p class="card-text"><%=mensaje.getTexto() %></p>
+		    
+		    <p class="card-link"><%=mensaje.getFecha() %></p>
+		  </div>
+		</div>
+	<%}// cierra else
+	} //cierrra for%>
+</div>
 </body>
 </html>
