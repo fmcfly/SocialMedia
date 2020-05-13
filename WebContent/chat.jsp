@@ -5,7 +5,11 @@
     pageEncoding="ISO-8859-1"%>
     <%
     HttpSession sesion = request.getSession();
-    ArrayList<MensajeBean> mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");
+    ArrayList<MensajeBean> mensajes = new ArrayList<MensajeBean>();
+    if(sesion.getAttribute("mensajes") != null){
+    	mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");	
+    }
+    
     UsuarioBean user = (UsuarioBean) sesion.getAttribute("usuario");
     %>
 <!DOCTYPE html>
@@ -16,7 +20,7 @@
 
 <link rel="stylesheet" href="css/estilos.css" type="text/css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script type="text/javascript" src="javascript/funciones.js"></script>
+<script type="text/javascript" src="javascript/mensajes.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,10 +32,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="principal.jsp">Amigos <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">About us</a>
+        <a class="nav-link" href="index.html">Cerrar Sesión</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -44,7 +48,7 @@
 	<%for(MensajeBean mensaje: mensajes) {
 		if(mensaje.getIdUsuario() == user.getIdUser()){ %>
 		<div class="mensajeUsuario">
-			<div class="card border border-success " style="width: 18rem;">
+			<div class="card border border-success " style="width: 15rem;">
 			  <div class="card-body">
 			    <p class="card-text"><%=mensaje.getTexto() %></p>
 			    
@@ -54,7 +58,7 @@
 		</div>
 		<%}else{%>
 	
-		<div class="card border border-primary" style="width: 18rem;">
+		<div class="card border border-primary" style="width: 15rem;">
 		  <div class="card-body">
 		    <p class="card-text"><%=mensaje.getTexto() %></p>
 		    
@@ -63,6 +67,16 @@
 		</div>
 	<%}// cierra else
 	} //cierrra for%>
+	
 </div>
+<form class="row" id="envio">
+	<div class="col-6">
+	    <label>Mensaje</label>
+	    <textarea class="form-control" id="message" rows="4" name="mensaje"></textarea>
+	</div>
+	<div class="col-2">
+		<button class="btn btn-primary" onclick="enviarMensaje()">Enviar</button>
+	</div>
+</form>
 </body>
 </html>

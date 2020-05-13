@@ -3,11 +3,18 @@ package mx.gob.upiicsa.modelo;
 import java.sql.Date;
 
 public class MensajeBean {
+	private int idChat;
 	private int idUsuario;
 	private String texto;
 	private Date fecha;
 	
 	
+	public int getIdChat() {
+		return idChat;
+	}
+	public void setIdChat(int idChat) {
+		this.idChat = idChat;
+	}
 	public int getIdUsuario() {
 		return idUsuario;
 	}
