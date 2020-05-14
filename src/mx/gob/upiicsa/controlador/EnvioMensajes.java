@@ -44,21 +44,28 @@ public class EnvioMensajes extends HttpServlet {
 
 		String mensaje = request.getParameter("mensaje");
 		HttpSession sesion  = request.getSession();
-		int idChat = (Integer) sesion.getAttribute("idChat");
-		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		
 		MensajeBean msjNuevo = new MensajeBean();
-		msjNuevo.setIdChat(idChat);
+		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		MensajesDao mensajesDao = new MensajesDao();
+		//Este es el ID del usuario Logeado
 		msjNuevo.setIdUsuario(usuarioLogeado.getIdUser());
 		msjNuevo.setTexto(mensaje);
 		
-		MensajesDao mensajesDao = new MensajesDao();
-		//guardamos el mensjae
-		mensajesDao.guardarMensaje(msjNuevo);
-		
-		//Recargar los mensajes llamando de nuevo a MesnajesServlet
 		/*int idAmigoActual = (Integer)sesion.getAttribute("idAmigo");
 		request.getRequestDispatcher("MensajesServlet?idAmigo="+idAmigoActual).forward(request,response);*/
 		int idAmigoActual = (Integer)sesion.getAttribute("idAmigo");
+		
+		if(sesion.getAttribute("idChat") != null) { // SI EL IDCHAT es nul quiere decir que aún no se inicia una conversación
+			int idChat = (Integer) sesion.getAttribute("idChat");
+			msjNuevo.setIdChat(idChat);
+			//guardamos el mensjae
+			mensajesDao.guardarMensaje(msjNuevo);
+		}else { //Si esta vació el idchat entonces aun no hay una conversación 
+			mensajesDao.crearChat(msjNuevo,idAmigoActual);
+		}
+		//Recargar los mensajes llamando de nuevo a MesnajesServlet
+		
 		//actualizamos el mensaje
 		ArrayList<MensajeBean> mensajesEncontrados = mensajesDao.getMensajes(idAmigoActual, usuarioLogeado.getIdUser());
 		sesion.setAttribute("mensajes", mensajesEncontrados);

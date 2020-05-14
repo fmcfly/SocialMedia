@@ -48,7 +48,7 @@
 	<%for(MensajeBean mensaje: mensajes) {
 		if(mensaje.getIdUsuario() == user.getIdUser()){ %>
 		<div class="mensajeUsuario">
-			<div class="card border border-success " style="width: 15rem;">
+			<div class="card border border-success " style="width: 18rem;">
 			  <div class="card-body">
 			    <p class="card-text"><%=mensaje.getTexto() %></p>
 			    
@@ -58,7 +58,7 @@
 		</div>
 		<%}else{%>
 	
-		<div class="card border border-primary" style="width: 15rem;">
+		<div class="card border border-primary" style="width: 18rem;">
 		  <div class="card-body">
 		    <p class="card-text"><%=mensaje.getTexto() %></p>
 		    
@@ -69,10 +69,10 @@
 	} //cierrra for%>
 	
 </div>
-<form class="row" id="envio">
+<form class="row" id="envio" >
 	<div class="col-6">
-	    <label>Mensaje</label>
-	    <textarea class="form-control" id="message" rows="4" name="mensaje"></textarea>
+	    <label>Mensaje:</label>
+	    <textarea class="form-control" id="message" rows="4" name="mensaje" style="width: 150%;"></textarea>
 	</div>
 	<div class="col-2">
 		<button class="btn btn-primary" onclick="enviarMensaje()">Enviar</button>
