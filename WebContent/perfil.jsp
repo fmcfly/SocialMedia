@@ -1,22 +1,19 @@
-<%@page import="java.util.ArrayList"%>
 <%@page import="mx.gob.upiicsa.modelo.UsuarioBean"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%
-    //Primero recuperamos la sesión que creamos en el LoginServlet!!!
-    HttpSession sesion = request.getSession();
-    // Después de la sesion obtenemos el objeto que guardamos con el nombre "usuario"
-    								//(UsuarioBean) estamos casteando o conviritendolo a un tipo de datoa Usuario Bean
-    UsuarioBean user =(UsuarioBean) sesion.getAttribute("usuario");
-    ArrayList<UsuarioBean> listaAmigos = (ArrayList<UsuarioBean>) sesion.getAttribute("amigos");
-    %>
+<%
+//recupero la sesion
+	HttpSession sesion = request.getSession();
+//instancio un objeto arraylist de tipo UsuarioBean y le asigno lo que este guardando en la sesion con el nombre "perfiles"
+	ArrayList<UsuarioBean> listaPerfiles = (ArrayList<UsuarioBean>) sesion.getAttribute("perfiles");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Social Media</title>
+<title>Insert title here</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script type="text/javascript" src="javascript/funciones.js"></script>
 </head>
 <body>
 
@@ -42,50 +39,23 @@
     </form>
   </div>
 </nav>
-
-<form id="amigosChat" class="container">
+<div class="container">
 	<div class="form-inline">
-		<%for(UsuarioBean amigo:listaAmigos) { 
+		<%for(UsuarioBean amigo:listaPerfiles) { 
 		String nombre = amigo.getNombre()+" "+ amigo.getApellido();%>
 		<div class="card mx-sm-2 mb-1" style="width: 18rem; ">
 		  <img class="card-img-top" src="img/<%=amigo.getImage() %>" style="height:300px;" alt="Card image cap">
 		  <div class="card-body">
 		    <h5 class="card-title"><%=nombre %></h5>
 		    <p class="card-text"><%=amigo.getCorreo() %></p>
-		    <button onclick="friend(<%=amigo.getIdUser()%>)"
-		    class="btn btn-primary">Mensaje</button>
+		    <!--<button onclick="friend(<%=amigo.getIdUser()%>)"
+		    class="btn btn-primary">Mensaje</button>-->
 		  </div>
 		</div>
 		
 		<%} %>
 	</div>
-	<!-- 
-	<table class="table table-dark">
-	  <thead>
-	    <tr>
-	      <th scope="col">ID</th>
-	      <th scope="col">Nombre</th>
-	      <th scope="col">Apellido</th>
-	      <th scope="col">Correo</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	  <%
-	  for(UsuarioBean amigo:listaAmigos) {
-	  %>
-		
-		 <tr >
-		  		 <th scope="row"><%=amigo.getIdUser() %></th>
-		  		 <td><%=amigo.getNombre() %></td>
-		  		 <td><%=amigo.getApellido() %></td>
-		  		 <td><%=amigo.getCorreo() %></td>
-		  </tr>
-		<%}
-	  %>	    
-	  </tbody>
-	</table> -->
-</form>
-
-
+	
+</div>
 </body>
 </html>

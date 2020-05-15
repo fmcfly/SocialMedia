@@ -7,6 +7,7 @@ public class UsuarioBean {
 	private String correo;
 	private String password;
 	private long telefono;
+	private String image;
 	
 	public int getIdUser() {
 		return idUser;
@@ -44,4 +45,11 @@ public class UsuarioBean {
 	public void setTelefono(long telefono) {
 		this.telefono = telefono;
 	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
 }
