@@ -15,7 +15,7 @@ public class LoginDao {
 		// DESPUÉS QUE HAGA LA CONEXIÓN, LA VAMOS A OBTENER POR MEDIO DEL GETTER "getConexion()" 
 		con = conexionBD.getConexion();
 		try {
-			String cadena = "select * from usuarios where correo ='"+user.getCorreo() +  "' and password = '" + user.getPassword()+"'  ;";
+			String cadena = "select * from Usuarios where correo ='"+user.getCorreo() +  "' and password = '" + user.getPassword()+"'  ;";
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(cadena);
 			if(rs.next()) {

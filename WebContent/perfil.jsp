@@ -14,6 +14,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script type="text/javascript" src="javascript/funciones.js"></script>
 </head>
 <body>
 
@@ -39,23 +40,25 @@
     </form>
   </div>
 </nav>
-<div class="container">
+<form class="container" id="agregar">
 	<div class="form-inline">
-		<%for(UsuarioBean amigo:listaPerfiles) { 
-		String nombre = amigo.getNombre()+" "+ amigo.getApellido();%>
+		<%for(UsuarioBean usuario:listaPerfiles) { 
+		String nombre = usuario.getNombre()+" "+ usuario.getApellido();%>
 		<div class="card mx-sm-2 mb-1" style="width: 18rem; ">
-		  <img class="card-img-top" src="img/<%=amigo.getImage() %>" style="height:300px;" alt="Card image cap">
+		  <img class="card-img-top" src="img/<%=usuario.getImage() %>" style="height:300px;" alt="Card image cap">
 		  <div class="card-body">
 		    <h5 class="card-title"><%=nombre %></h5>
-		    <p class="card-text"><%=amigo.getCorreo() %></p>
-		    <!--<button onclick="friend(<%=amigo.getIdUser()%>)"
-		    class="btn btn-primary">Mensaje</button>-->
+		    <p class="card-text"><%=usuario.getCorreo() %></p>
+		    
+		    <button onclick="agregarAmigo(<%=usuario.getIdUser()%>)"
+		    class="btn btn-primary">Agregar</button>
+		    
 		  </div>
 		</div>
 		
 		<%} %>
 	</div>
 	
-</div>
+</form>
 </body>
 </html>

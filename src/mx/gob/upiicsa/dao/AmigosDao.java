@@ -25,7 +25,7 @@ public class AmigosDao {
 		ArrayList<UsuarioBean> listaAmigos = new ArrayList<UsuarioBean>(); // va a guardar objetos de tipo UsuarioBean 
 		
 		try {
-			String query = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from usuarios u inner join relationship r on u.id = r.idamigo where r.iduser = "+idusuario;
+			String query = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u inner join relationship r on u.id = r.idamigo where r.iduser = "+idusuario;
 			st = con.createStatement();
 			rs= st.executeQuery(query);
 			while(rs.next()) { // rs.next() va por filas 
@@ -46,9 +46,9 @@ public class AmigosDao {
 	public ArrayList<UsuarioBean> encontrarlPerfil(String criterioBusqueda){
 		ArrayList<UsuarioBean> listaPerfiles = new ArrayList<UsuarioBean>();
 		try {
-			String queryEnmcontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from usuarios u where nombres like  '%"+criterioBusqueda+"%' or apellidos like '%"+criterioBusqueda+"%'";
+			String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u where nombres like  '%"+criterioBusqueda+"%' or apellidos like '%"+criterioBusqueda+"%'";
 			st = con.createStatement();
-			rs = st.executeQuery(queryEnmcontarPerfil);
+			rs = st.executeQuery(queryEncontarPerfil);
 			
 			while(rs.next()) {
 				UsuarioBean usuario = new UsuarioBean();
@@ -62,9 +62,27 @@ public class AmigosDao {
 		}catch(SQLException sql) {
 			System.out.println("Error de SQLException"+ sql.getMessage());
 		}
-		return listaPerfiles;
-		
-		
+		return listaPerfiles;		
+	}
+	
+	public int agregarAmigo(int idLogeado, int idAmigo) {
+		int registroInsertado = 0;
+		int registroInsertado2 = 0;
+		try {
+			String queryAgregarAmigo = " insert into relationship values (" + idLogeado +", "+ idAmigo + ");";
+			String queryAgregarLogeado =  "insert into relationship values (" + idAmigo +"," + idLogeado + ");";
+			
+			st = con.createStatement();
+			//Cuando ejecutas querys INSERT, UPDATE Y DELETE TE REGRESA UN ENTERO, DE CUANTOS REGISTROS FUERON AFECTADOS
+			//Cuando ejecutas querys SELECT, te regresa un RESULTSET.
+			registroInsertado = st.executeUpdate(queryAgregarAmigo);
+			if(registroInsertado > 0)
+				registroInsertado2 = st.executeUpdate(queryAgregarLogeado);
+			
+		}catch(SQLException sql) {
+			System.out.println("Error de SQLException"+ sql.getMessage());
+		}
+		return registroInsertado2;
 	}
 }
 

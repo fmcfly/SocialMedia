@@ -45,7 +45,25 @@ public class PerfilServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
+		HttpSession sesion = request.getSession();
+		//OBTENEMOS EL USUARIO DE LA SESIÓN
+		UsuarioBean usuarioLogeado = new UsuarioBean();
+		usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		//OBTENEMOS EL ID QUE QUIERE AGREGAR EL USUAIO:
+		//Convertimos el ripo de dato String idUsuario a entero con la clase envoltorio Integer
+		int idAmigo = Integer.parseInt(request.getParameter("idUsuario"));
+		
+		AmigosDao amigosDao = new AmigosDao();
+		int respuesta = amigosDao.agregarAmigo(usuarioLogeado.getIdUser(), idAmigo);
+		System.out.println(respuesta);
+		if(respuesta > 0) {
+			ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
+			sesion.setAttribute("amigos", listaAmigos);
+			request.getRequestDispatcher("/principal.jsp").forward(request,response);
+		}else {
+			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+		}
 	}
 
 }

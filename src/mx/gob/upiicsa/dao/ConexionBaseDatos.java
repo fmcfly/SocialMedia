@@ -9,7 +9,7 @@ public class ConexionBaseDatos {
 	public ConexionBaseDatos(){
 		try{
 			//Class.forName("com");
-			String connectionURL = "jdbc:sqlserver://EQUIPO\\SQLEXPRESS:1433;database=socialmedia;user=sa;password=administrador;trustServerCertificate=false;";
+			String connectionURL = "jdbc:mysql://fermcfly.cgkjurfvbaby.us-east-1.rds.amazonaws.com:3306/SocialMedia?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false&" +"user=admin&password=Starwars.97"; 
 			con = DriverManager.getConnection(connectionURL);
 			if(con != null){
 				System.out.println("Conexion exitosa");

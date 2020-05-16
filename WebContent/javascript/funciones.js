@@ -9,3 +9,10 @@ function friend(idAmigo){
 	formChat.method = "POST";
 	formChat.submit();// enviamos
 }
+
+function agregarAmigo(idUsuario){	
+	let formAgregar = document.getElementById("agregar");
+	formAgregar.action = "/SocialMedia/PerfilServlet?idUsuario="+idUsuario;
+	formAgregar.method = "POST";
+	formAgregar.submit();// enviamos
+}

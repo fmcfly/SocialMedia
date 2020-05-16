@@ -22,7 +22,7 @@ public class MensajesDao {
 		
 		ArrayList<MensajeBean> mensajesEncontrados = new ArrayList<MensajeBean>(); 
 		
-		String queryMensajes ="select  id_chat, id_usuario, texto, fecha  from mensajes\r\n" + 
+		String queryMensajes ="select  id_chat, id_usuario, texto, fecha  from Mensajes\r\n" + 
 				"	where id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idAmigo+" and\r\n" + 
 				"	id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idLogin+")) order by fecha asc";
 		try {
@@ -44,7 +44,7 @@ public class MensajesDao {
 	
 	public void guardarMensaje(MensajeBean msjNuevo) {
 		String queryInsertar ="insert into Mensajes values ("+ msjNuevo.getIdChat() + "," + msjNuevo.getIdUsuario() + ",'" 
-							+ msjNuevo.getTexto() + "',getdate())";
+							+ msjNuevo.getTexto() + "',now())";
 		
 		try {
 			st = con.createStatement();
@@ -60,7 +60,7 @@ public class MensajesDao {
 	}
 	
 	public void crearChat(MensajeBean msjNuevo,int idAmigo) {
-		String queryCrearChat =  "select max (id_chat) as ultimochat from Chat";
+		String queryCrearChat =  "select MAX(id_chat) as ultimochat from chat";
 		
 		try {
 		st= con.createStatement();
@@ -71,7 +71,7 @@ public class MensajesDao {
 		int chatMax = rs.getInt("ultimochat");
 		chatMax++;
 		// CREAMOS EL ICHAT 
-		String queryInsertar = "insert into chat values(" + chatMax +",getdate())";
+		String queryInsertar = "insert into chat values(" + chatMax +",curdate())";
 		int registroInsertar = st.executeUpdate(queryInsertar);
 		if(registroInsertar >0) {// SI SE CREO CORRECTAEMNTE CON EL ID PROSEGUIMOS A CREAR LA RELACIÓN DE LOS UAURIOS 
 			System.out.println("Se creo chat");
