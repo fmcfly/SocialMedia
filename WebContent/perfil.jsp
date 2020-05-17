@@ -5,6 +5,7 @@
 <%
 //recupero la sesion
 	HttpSession sesion = request.getSession();
+	UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario"); 
 //instancio un objeto arraylist de tipo UsuarioBean y le asigno lo que este guardando en la sesion con el nombre "perfiles"
 	ArrayList<UsuarioBean> listaPerfiles = (ArrayList<UsuarioBean>) sesion.getAttribute("perfiles");
 %>
@@ -49,9 +50,16 @@
 		  <div class="card-body">
 		    <h5 class="card-title"><%=nombre %></h5>
 		    <p class="card-text"><%=usuario.getCorreo() %></p>
+		    <%if (usuario.getIdUser() != userLogin.getIdUser()){
+		   			if(usuario.getAmigo() == 0){ %>	
+				    	<button onclick="agregarAmigo(<%=usuario.getIdUser()%>)"
+				    	class="btn btn-primary">Agregar</button>
+		    <%		}else{%>
+		    			<button onclick="sendMessage(<%=usuario.getIdUser()%>)"
+		    			class="btn btn-primary">Mensaje</button>
+		    <% 		}
+		    }%>
 		    
-		    <button onclick="agregarAmigo(<%=usuario.getIdUser()%>)"
-		    class="btn btn-primary">Agregar</button>
 		    
 		  </div>
 		</div>

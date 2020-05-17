@@ -43,10 +43,17 @@ public class AmigosDao {
 		return listaAmigos;
 	}
 	
-	public ArrayList<UsuarioBean> encontrarlPerfil(String criterioBusqueda){
+	public ArrayList<UsuarioBean> encontrarlPerfil(String criterioBusqueda,int idUserLogeado){
 		ArrayList<UsuarioBean> listaPerfiles = new ArrayList<UsuarioBean>();
 		try {
-			String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u where nombres like  '%"+criterioBusqueda+"%' or apellidos like '%"+criterioBusqueda+"%'";
+			//String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u where nombres like  '%"+criterioBusqueda+"%' or apellidos like '%"+criterioBusqueda+"%'";
+			String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image,\r\n" + 
+					"	CASE\r\n" + 
+					"		WHEN idamigo is not null THEN 1\r\n" + 
+					"		WHEN idamigo is null THEN 0\r\n" + 
+					"	END as amigo\r\n" + 
+					"from Usuarios u left join (SELECT idamigo from relationship where idamigo in (SELECT id FROM Usuarios u where nombres like '%"+ criterioBusqueda +"%' or u.apellidos like '%"+criterioBusqueda+"%') and iduser ="+idUserLogeado+") x\r\n" + 
+					"on u.id = x.idamigo where nombres like '%"+criterioBusqueda +"%' or u.apellidos like '%"+criterioBusqueda+"%'";
 			st = con.createStatement();
 			rs = st.executeQuery(queryEncontarPerfil);
 			
@@ -57,6 +64,7 @@ public class AmigosDao {
 				usuario.setApellido(rs.getString("apellido"));
 				usuario.setCorreo(rs.getString("correo"));
 				usuario.setImage(rs.getString("image"));
+				usuario.setAmigo(rs.getInt("amigo"));
 				listaPerfiles.add(usuario);
 			}
 		}catch(SQLException sql) {

@@ -16,3 +16,10 @@ function agregarAmigo(idUsuario){
 	formAgregar.method = "POST";
 	formAgregar.submit();// enviamos
 }
+
+function sendMessage(idUsuario){
+	let formAgregar = document.getElementById("agregar");
+	formAgregar.action = "/SocialMedia/MensajesServlet?idAmigo="+idUsuario;
+	formAgregar.method = "POST";
+	formAgregar.submit();// enviamos
+}

@@ -8,6 +8,7 @@ public class UsuarioBean {
 	private String password;
 	private long telefono;
 	private String image;
+	private int amigo;
 	
 	public int getIdUser() {
 		return idUser;
@@ -51,5 +52,13 @@ public class UsuarioBean {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	public int getAmigo() {
+		return amigo;
+	}
+	public void setAmigo(int amigo) {
+		this.amigo = amigo;
+	}
+	
+	
 	
 }

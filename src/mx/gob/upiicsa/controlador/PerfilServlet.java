@@ -34,8 +34,9 @@ public class PerfilServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession sesion = request.getSession();
+		UsuarioBean userLogeado = (UsuarioBean) sesion.getAttribute("usuario");
 		AmigosDao amigosDao =new AmigosDao();
-		ArrayList<UsuarioBean> perfilesEncontrados = amigosDao.encontrarlPerfil(request.getParameter("nombre"));
+		ArrayList<UsuarioBean> perfilesEncontrados = amigosDao.encontrarlPerfil(request.getParameter("nombre"),userLogeado.getIdUser());
 		sesion.setAttribute("perfiles", perfilesEncontrados);
 		request.getRequestDispatcher("/perfil.jsp").forward(request,response);
 	}
