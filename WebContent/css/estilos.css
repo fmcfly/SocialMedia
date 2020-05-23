@@ -32,7 +32,7 @@
 	
 }
 .col-2{
-  left: 140px;
+  
  transform: translate(1%, 70%);
 }
 label{
@@ -42,4 +42,16 @@ label{
 img{
 	height:50%;
 	width:40%:
+}
+
+.form{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	text-align: center;
+	
+};
+
+.boton{
+	
+	left: 40px;
 }

@@ -9,6 +9,22 @@ public class UsuarioBean {
 	private long telefono;
 	private String image;
 	private int amigo;
+	/*POLIMORFISMO
+	 * 
+	 * SOBRECARGA
+	 * UTILIZAR EL MISMO NOMBRE DE UN MÉTODO O EN ESTE CASO CONSTRUCTOR 
+	 * PERO RECIBIENDO DIFERENTES PARAMETROS*/
+	public UsuarioBean() {
+		
+	}
+	
+	public UsuarioBean(String nombre,String apellido,String correo,long telefono,String password) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.correo = correo;
+		this.telefono = telefono;
+		this.password = password;
+	}
 	
 	public int getIdUser() {
 		return idUser;

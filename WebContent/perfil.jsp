@@ -58,8 +58,7 @@
 		    			<button onclick="sendMessage(<%=usuario.getIdUser()%>)"
 		    			class="btn btn-primary">Mensaje</button>
 		    <% 		}
-		    }%>
-		    
+		    }%>	    
 		    
 		  </div>
 		</div>
