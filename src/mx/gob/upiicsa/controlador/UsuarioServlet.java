@@ -45,9 +45,15 @@ public class UsuarioServlet extends HttpServlet {
 		UsuarioBean usuarioNuevo = new UsuarioBean(request.getParameter("Nombre"),request.getParameter("Apellido")
 				,request.getParameter("Correo"),telefono,request.getParameter("Contrasena"));
 		
-		newUsuario.crearUsuario(usuarioNuevo);
-
-		doGet(request, response);
+		int statusRegistro = newUsuario.crearUsuario(usuarioNuevo);
+		if(statusRegistro  > 0) {
+			request.getRequestDispatcher("/index.html").forward(request,response);
+		}else if(statusRegistro == -2) {
+			request.getRequestDispatcher("/registro.jsp").forward(request,response);
+		}else {
+			request.getRequestDispatcher("/registro.jsp").forward(request,response);
+		}
+		
 		
 	}
 
