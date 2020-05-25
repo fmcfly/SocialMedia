@@ -74,12 +74,13 @@ public class LoginServlet extends HttpServlet {
 			/*for(UsuarioBean amigo:listaAmigos) {
 				System.out.println(amigo.getNombre());
 			}*/
+			sesion.removeAttribute("mensaje");
 			sesion.setAttribute("usuario", usuarioEncontrado);
 			sesion.setAttribute("amigos", listaAmigos);
 			request.getRequestDispatcher("/principal.jsp").forward(request,response);
 		}else {// estan mal las credenciales
-			
-			request.getRequestDispatcher("/index.html").forward(request,response);
+			sesion.setAttribute("mensaje","Credenciales invalidas");
+			request.getRequestDispatcher("/login.jsp").forward(request,response);
 			//response.getWriter().append("Invalido");
 		}
 		

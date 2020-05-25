@@ -47,7 +47,7 @@ public class UsuarioServlet extends HttpServlet {
 		
 		int statusRegistro = newUsuario.crearUsuario(usuarioNuevo);
 		if(statusRegistro  > 0) {
-			request.getRequestDispatcher("/index.html").forward(request,response);
+			request.getRequestDispatcher("/login.jsp").forward(request,response);
 		}else if(statusRegistro == -2) {
 			request.getRequestDispatcher("/registro.jsp").forward(request,response);
 		}else {

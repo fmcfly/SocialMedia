@@ -16,7 +16,7 @@
 	
 	<h1>Bienvenido a Social Media</h1>
 	<h2>Realiza tu registro</h2>
-	<hr>
+	<hr width="85%" color="violet">
 	</div>
 	
 	<div class="forma">
@@ -47,7 +47,7 @@
 		  <input type="file" id="myFile"  name="Imagen">
 		  
 		  <div class="nav justify-content-end">
-		  	<button class="boton btn-danger" onclick="validar()">Registrar</button>
+		  	<button class="boton" color="violet" onclick="validar()">Registrar</button>
 		  </div>
 		</form>
 	   

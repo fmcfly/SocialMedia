@@ -25,7 +25,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">SocialMedia</a>
+  <a class="navbar-brand" href="login.jsp">SocialMedia</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -36,13 +36,13 @@
         <a class="nav-link" href="principal.jsp">Amigos <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html">Cerrar Sesión</a>
+        <a class="nav-link" href="login.jsp">Cerrar Sesión</a>
       </li>
     </ul>
     <form action ="PerfilServlet" method="GET"
     class="form-inline my-2 my-lg-0" id="buscar" >
       <input class="form-control mr-sm-2" type="search" name="nombre" placeholder="Buscar" aria-label="Buscar">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
     </form>
   </div>
 </nav>
@@ -74,10 +74,10 @@
 <form class="row" id="envio" >
 	<div class="col-6">
 	    <label>Mensaje:</label>
-	    <textarea class="form-control" id="message" rows="4" name="mensaje" style="width: 150%;"></textarea>
+	    <textarea class="form-control" id="message" rows="4" name="mensaje" style="width: 367px;"></textarea>
 	</div>
 	<div class="col-2">
-		<button class="btn btn-primary" onclick="enviarMensaje()">Enviar</button>
+		<button class="botonEnviarMensaje btn-primary" onclick="enviarMensaje()">Enviar</button>
 	</div>
 </form>
 </body>
