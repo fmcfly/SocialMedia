@@ -25,12 +25,6 @@
 				<hr width="85%" color="violet">
 				<h2>Inicia sesión</h2>
 		</div>
-		<%if(mensaje != ""){%>
-			<div class="alert alert-danger" role="alert">
-			  <%=mensaje %>
-			</div>
-		<%}
-		%>
 			<form class="container" method="POST" action="LoginServlet">
 				  <div class="form-group">
 				    <label for="exampleInputEmail1">Correo:</label>
@@ -39,12 +33,22 @@
 				  <div class="form-group">
 				    <label for="exampleInputPassword1">Contraseña</label>
 				    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+				  </div> 
+				  <div class="form-group"> 
+				    <button type="submit" class="btn btn-primary">Ingresar</button>
+					<a href="registro.jsp">¿Aún no tienes cuenta?</a>
 				  </div>
-				
-				  <button type="submit" class="btn btn-primary">Ingresar</button>
-				  <a href="registro.jsp">¿Aún no tienes cuenta?</a>
-			</form>
-
-
+				  
+				  
+				 <div class="mx-auto" style="width: 200px;">
+   			 	    <div class="input-group-prepend">
+				       <%if(mensaje != ""){%>
+						<div class="alert alert-danger" role="alert">
+			  	          <%=mensaje %>
+			 			</div>
+			  	 	</div>
+				  </div>
+						  <%}%>
+			 </form>
 	</body>
 </html>

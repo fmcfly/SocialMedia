@@ -42,8 +42,8 @@ public class RegistroDao {
 				int idMax = rs.getInt("ultimoID");
 				idMax ++;
 				
-				String AgregarNewUser = "insert into Usuarios(id,nombres,apellidos,correo,telefono,password) values("+idMax+""
-						+ ",'"+userNew.getNombre()+"','"+userNew.getApellido()+"','"+userNew.getCorreo()+"',"+userNew.getTelefono()+",'"+userNew.getPassword()+"');";
+				String AgregarNewUser = "insert into Usuarios(id,nombres,apellidos,correo,telefono,password,image) values("+idMax+""
+						+ ",'"+userNew.getNombre()+"','"+userNew.getApellido()+"','"+userNew.getCorreo()+"',"+userNew.getTelefono()+",'"+userNew.getPassword()+"','"+userNew.getImage()+"');";
 				st = con.createStatement();
 				registroInsertado  = st.executeUpdate(AgregarNewUser);
 				if(registroInsertado < 1){

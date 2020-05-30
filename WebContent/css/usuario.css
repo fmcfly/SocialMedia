@@ -1,0 +1,39 @@
+body{
+	font-family: 'Roboto', sans-serif;
+}
+
+.numAmigos{
+	padding-left:140px;
+	padding-top:65px;
+}
+
+.frase{
+	padding-top:65px;
+}
+
+.imagenPerfil{
+	padding-left:120px;
+}
+
+.fondoAzul{
+	background-color:#0E2A55;
+	color: #F9F3EC;
+	font-size:18px;
+}
+
+.fondoRojo{
+	background-color:#E44652;
+	color: #F9F3EC;
+	font-size:18px;
+}
+
+.cumpleaños{
+	padding-left: 60px;
+}
+
+.sexo{
+	padding-left: 120px;
+}
+.pais{
+	padding-left: 160px;
+}

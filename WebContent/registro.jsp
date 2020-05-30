@@ -20,7 +20,7 @@
 	</div>
 	
 	<div class="forma">
-		<form id="registroForm">
+		<form id="registroForm" enctype="multipart/form-data">
 		      
 	      <label >Nombre:</label>
 	      <input type="text" class="form-control" id="nombreInput" name="Nombre" required>
