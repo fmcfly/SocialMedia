@@ -16,14 +16,14 @@ body{
 }
 
 .fondoAzul{
-	background-color:#0E2A55;
+	background-color:#2C393F;
 	color: #F9F3EC;
 	font-size:18px;
 }
 
 .fondoRojo{
-	background-color:#E44652;
-	color: #F9F3EC;
+	background-color:#EDEDED;
+	color: #2C393F;
 	font-size:18px;
 }
 
@@ -36,4 +36,14 @@ body{
 }
 .pais{
 	padding-left: 160px;
+}
+
+.tabla{
+	width:70%;
+	height:200px ;
+	overflow-y:auto;
+}
+
+.boton-editar{
+	padding-left:5%;
 }

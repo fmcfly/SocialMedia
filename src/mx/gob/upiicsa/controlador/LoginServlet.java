@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
 			sesion.removeAttribute("mensaje");
 			sesion.setAttribute("usuario", usuarioEncontrado);
 			sesion.setAttribute("amigos", listaAmigos);
-			request.getRequestDispatcher("/principal.jsp").forward(request,response);
+			request.getRequestDispatcher("/usuario.jsp").forward(request,response);
 		}else {// estan mal las credenciales
 			sesion.setAttribute("mensaje","Credenciales invalidas");
 			request.getRequestDispatcher("/login.jsp").forward(request,response);

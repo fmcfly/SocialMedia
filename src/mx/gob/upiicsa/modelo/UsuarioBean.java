@@ -1,5 +1,7 @@
 package mx.gob.upiicsa.modelo;
 
+import java.sql.Date;
+
 public class UsuarioBean {
 	private int idUser;
 	private String nombre;
@@ -9,6 +11,62 @@ public class UsuarioBean {
 	private long telefono;
 	private String image;
 	private int amigo;
+	private String frase;
+	private String nombreUsuario;
+	private Date birhtdate;
+	private String sexo;
+	private String pais;
+	private int numeroAmigos;
+	
+	public int getNumeroAmigos() {
+		return numeroAmigos;
+	}
+
+	public void setNumeroAmigos(int numeroAmigos) {
+		this.numeroAmigos = numeroAmigos;
+	}
+
+	public String getFrase() {
+		return frase;
+	}
+
+	public void setFrase(String frase) {
+		this.frase = frase;
+	}
+
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+	public Date getBirhtdate() {
+		return birhtdate;
+	}
+
+	public void setBirhtdate(Date birhtdate) {
+		this.birhtdate = birhtdate;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+	
 	/*POLIMORFISMO
 	 * 
 	 * SOBRECARGA

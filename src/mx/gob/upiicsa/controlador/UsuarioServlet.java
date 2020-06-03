@@ -108,7 +108,7 @@ public class UsuarioServlet extends HttpServlet {
 								request.getRequestDispatcher("/registro.jsp").forward(request,response);
 							}
 							//fileItem.write(new File("/SocialMedia/WebContent/img/"+fileItem.getName()));
-							fileItem.write(new File("C:\\Users\\DELL\\Escritorio\\Proyectos_Java\\SocialMedia\\WebContent\\img\\"+fileItem.getName()));
+							//fileItem.write(new File("C:\\Users\\DELL\\Escritorio\\Proyectos_Java\\SocialMedia\\WebContent\\img\\"+fileItem.getName()));
 						}
 					}
 					
