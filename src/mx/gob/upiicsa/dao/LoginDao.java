@@ -34,6 +34,8 @@ public class LoginDao {
 		
 		String procedure = "{ call validar (?,?)}";
 		try {
+			System.out.println(user.getCorreo());
+			System.out.println(user.getPassword());
 			CallableStatement cllst = con.prepareCall(procedure);
 			cllst.setString(1,user.getCorreo());
 			cllst.setString(2,user.getPassword());
@@ -45,7 +47,7 @@ public class LoginDao {
 				user.setApellido(rs.getString("lastname"));
 				user.setTelefono(rs.getLong("tel"));
 				user.setImage(rs.getString("image"));
-				user.setBirhtdate(rs.getDate("cumple"));
+				user.setBirhtdate(rs.getString("cumple"));
 				user.setSexo(rs.getString("sexo"));
 				user.setFrase(rs.getString("frase"));
 				user.setPais(rs.getString("pais"));

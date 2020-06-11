@@ -10,9 +10,13 @@ function friend(idAmigo){
 	formChat.submit();// enviamos
 }
 
-function agregarAmigo(idUsuario){	
+function agregarAmigo(idUsuario,criterioBusqueda){
+	console.log(criterioBusqueda);
+	if(criterioBusqueda === undefined){
+		criterioBusqueda = '';
+	}
 	let formAgregar = document.getElementById("agregar");
-	formAgregar.action = "/SocialMedia/PerfilServlet?idUsuario="+idUsuario;
+	formAgregar.action = "/SocialMedia/PerfilServlet?idUsuario="+idUsuario+"&nombre="+criterioBusqueda;
 	formAgregar.method = "POST";
 	formAgregar.submit();// enviamos
 }

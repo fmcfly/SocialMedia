@@ -10,9 +10,13 @@ body{
 .frase{
 	padding-top:65px;
 }
-
+#nombreUsuario{
+	padding-top:5px;
+	padding-left:70px;
+}
 .imagenPerfil{
 	padding-left:120px;
+	
 }
 
 .fondoAzul{

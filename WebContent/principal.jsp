@@ -53,8 +53,7 @@
 		    <h5 class="card-title"><%=nombre %></h5>
 		    <p class="card-text"><%=amigo.getCorreo() %></p>
 		    
-		    <button onclick="friend(<%=amigo.getIdUser()%>)"
-		    class="navbar-toggler" btn-primary">Mensaje</button>
+		    <button class="btn btn-primary" onclick="friend(<%=amigo.getIdUser()%>)">Mensaje</button>
 		  </div>
 		</div>
 		

@@ -55,7 +55,7 @@
 		    <p class="card-text"><%=usuario.getCorreo() %></p>
 		    <%if (usuario.getIdUser() != userLogin.getIdUser()){
 		   			if(usuario.getAmigo() == 0){ %>	
-				    	<button onclick="agregarAmigo(<%=usuario.getIdUser()%>)"
+				    	<button onclick="agregarAmigo(<%=usuario.getIdUser()%>,<%=request.getParameter("nombre")%>)"
 				    	class="btn btn-primary">Agregar</button>
 		    <%		}else{%>
 		    			<button onclick="sendMessage(<%=usuario.getIdUser()%>)"

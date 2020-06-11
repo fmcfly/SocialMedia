@@ -59,9 +59,11 @@ public class PerfilServlet extends HttpServlet {
 		int respuesta = amigosDao.agregarAmigo(usuarioLogeado.getIdUser(), idAmigo);
 		System.out.println(respuesta);
 		if(respuesta > 0) {
-			ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
-			sesion.setAttribute("amigos", listaAmigos);
-			request.getRequestDispatcher("/principal.jsp").forward(request,response);
+			ArrayList<UsuarioBean> perfilesEncontrados = amigosDao.encontrarlPerfil(request.getParameter("nombre"),usuarioLogeado.getIdUser());
+			sesion.setAttribute("perfiles", perfilesEncontrados);
+			/*ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
+			sesion.setAttribute("amigos", listaAmigos);*/
+			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
 		}else {
 			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
 		}

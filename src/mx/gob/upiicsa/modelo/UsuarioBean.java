@@ -13,7 +13,7 @@ public class UsuarioBean {
 	private int amigo;
 	private String frase;
 	private String nombreUsuario;
-	private Date birhtdate;
+	private String birhtdate;
 	private String sexo;
 	private String pais;
 	private int numeroAmigos;
@@ -42,11 +42,11 @@ public class UsuarioBean {
 		this.nombreUsuario = nombreUsuario;
 	}
 
-	public Date getBirhtdate() {
+	public String getBirhtdate() {
 		return birhtdate;
 	}
 
-	public void setBirhtdate(Date birhtdate) {
+	public void setBirhtdate(String birhtdate) {
 		this.birhtdate = birhtdate;
 	}
 
