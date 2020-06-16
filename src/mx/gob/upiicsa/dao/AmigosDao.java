@@ -1,5 +1,6 @@
 package mx.gob.upiicsa.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -91,6 +92,20 @@ public class AmigosDao {
 			System.out.println("Error de SQLException"+ sql.getMessage());
 		}
 		return registroInsertado2;
+	}
+	
+	public int eliminarAmigo(int idLogueado, int idAmigo) {
+		String eliminarAmigo = "{call eliminarAmigo (?,?)}";
+		int registrosAfectados = 0;
+		try {
+			CallableStatement ctmt = con.prepareCall(eliminarAmigo);
+			ctmt.setInt(1, idAmigo);
+			ctmt.setInt(2, idLogueado);
+			registrosAfectados = ctmt.executeUpdate();
+		}catch(SQLException sql) {
+			System.out.println("Error de SQLException"+sql.getMessage());
+		}
+		return registrosAfectados;
 	}
 }
 

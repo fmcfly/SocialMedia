@@ -2,6 +2,7 @@ package mx.gob.upiicsa.controlador;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +18,9 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import mx.gob.upiicsa.dao.AmigosDao;
+import mx.gob.upiicsa.dao.LoginDao;
+import mx.gob.upiicsa.dao.PerfilDao;
 import mx.gob.upiicsa.dao.RegistroDao;
 import mx.gob.upiicsa.modelo.UsuarioBean;
 
@@ -41,6 +45,24 @@ public class UsuarioServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		HttpSession sesion = request.getSession();
+		UsuarioBean usuarioLogueado = (UsuarioBean) sesion.getAttribute("usuario");
+		int idAmigo = Integer.parseInt(request.getParameter("idAmigo"));
+		
+		AmigosDao amigoDao = new AmigosDao();
+		PerfilDao perfil = new PerfilDao();
+		int registrosAfectados = amigoDao.eliminarAmigo(usuarioLogueado.getIdUser(), idAmigo);
+		
+		if(registrosAfectados > 0) {
+			ArrayList<UsuarioBean> listaAmigos = amigoDao.encontrarAmigos(usuarioLogueado.getIdUser());
+			usuarioLogueado = perfil.actualizarInfoLogueado(usuarioLogueado.getIdUser());
+			//sesion.removeAttribute("mensaje");
+			sesion.setAttribute("usuario", usuarioLogueado);
+			sesion.setAttribute("amigos", listaAmigos);
+		}else {
+			
+		}
 	}
 
 	/**

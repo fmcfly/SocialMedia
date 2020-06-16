@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import mx.gob.upiicsa.dao.AmigosDao;
+import mx.gob.upiicsa.dao.PerfilDao;
 import mx.gob.upiicsa.modelo.UsuarioBean;
 
 /**
@@ -49,8 +50,7 @@ public class PerfilServlet extends HttpServlet {
 		//doGet(request, response);
 		HttpSession sesion = request.getSession();
 		//OBTENEMOS EL USUARIO DE LA SESIÓN
-		UsuarioBean usuarioLogeado = new UsuarioBean();
-		usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
 		//OBTENEMOS EL ID QUE QUIERE AGREGAR EL USUAIO:
 		//Convertimos el ripo de dato String idUsuario a entero con la clase envoltorio Integer
 		int idAmigo = Integer.parseInt(request.getParameter("idUsuario"));
@@ -59,10 +59,15 @@ public class PerfilServlet extends HttpServlet {
 		int respuesta = amigosDao.agregarAmigo(usuarioLogeado.getIdUser(), idAmigo);
 		System.out.println(respuesta);
 		if(respuesta > 0) {
+			PerfilDao perfil = new PerfilDao();
 			ArrayList<UsuarioBean> perfilesEncontrados = amigosDao.encontrarlPerfil(request.getParameter("nombre"),usuarioLogeado.getIdUser());
+			usuarioLogeado = perfil.actualizarInfoLogueado(usuarioLogeado.getIdUser());
 			sesion.setAttribute("perfiles", perfilesEncontrados);
-			/*ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
-			sesion.setAttribute("amigos", listaAmigos);*/
+			sesion.setAttribute("usuario", usuarioLogeado);
+			
+			ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
+			sesion.setAttribute("amigos", listaAmigos);
+			
 			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
 		}else {
 			request.getRequestDispatcher("/perfil.jsp").forward(request,response);

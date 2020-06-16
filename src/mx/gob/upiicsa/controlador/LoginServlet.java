@@ -35,17 +35,19 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Hola MUNDO ").append(request.getContextPath());
+		//response.getWriter().append("Hola MUNDO ").append(request.getContextPath());
+		//NOS VA A SERVIR PARA QUITAR LA SESIÓN
+		HttpSession sesion = request.getSession();
+		sesion.removeAttribute("usuario");
+		sesion.removeAttribute("amigos"); 
+		System.out.println("Si entro");
+		//sesion.invalidate();//Invalida esta sesión y luego desvincula cualquier objeto vinculado a ella.
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		/*System.out.println(request.getParameter("correo"));
-		System.out.println(request.getParameter("password"));*/
-		//doGet(request, response);
 		HttpSession sesion = request.getSession(true);
 		
 		UsuarioBean user = new UsuarioBean();
@@ -54,26 +56,9 @@ public class LoginServlet extends HttpServlet {
 		
 		LoginDao login = new LoginDao();
 		UsuarioBean usuarioEncontrado =login.validar(user);
-		// Estan bien las credenciales
 		if(usuarioEncontrado.getIdUser() != -1) {
-			//response.getWriter().append("BIENVENIDO");
-			
-			// SI las crendenciales son validas quieres que posiblemente este usuario tenga amigos
-			//Instanciamos un objeto de tipo AmigosDao
 			AmigosDao amigos = new AmigosDao();
-			// de este objeto vamos a llamar al metodo listaAmigos(idusuario)
-			// como en el usuarioEncontrado ya tenemos el ID lo único que tenemos que hacer es enviarle ese dato como parametro al método listaAmigos
 			ArrayList<UsuarioBean> listaAmigos = amigos.encontrarAmigos(usuarioEncontrado.getIdUser());
-			// ciclo for 
-			// EN ARREGLO primitivos si se puede poner .length para saber la longitud,
-			// EN ARRAYLIST para saber su tamaño se necesita el método .size()
-			/*for(int i = 0; i < listaAmigos.size();i++ ) {
-				System.out.println(listaAmigos.get(i).getNombre());
-			}*/
-			// FOR EACH nos sirve para iterar ArrayList ya que crea un objeto del mismo tipo que viene configurado en el ArrayList
-			/*for(UsuarioBean amigo:listaAmigos) {
-				System.out.println(amigo.getNombre());
-			}*/
 			sesion.removeAttribute("mensaje");
 			sesion.setAttribute("usuario", usuarioEncontrado);
 			sesion.setAttribute("amigos", listaAmigos);

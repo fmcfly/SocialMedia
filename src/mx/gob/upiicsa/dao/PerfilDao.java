@@ -40,6 +40,35 @@ public class PerfilDao {
 		return usuario;
 	}
 		
+	public UsuarioBean actualizarInfoLogueado(int idUsuarioLogueado) {
+		UsuarioBean user = new UsuarioBean();
+		String procedure = "{ call update_login(?)}";
+		try {
+			CallableStatement cllst = con.prepareCall(procedure);
+			cllst.setInt(1,idUsuarioLogueado);
+			
+			ResultSet rs = cllst.executeQuery();
+			if(rs.next()) {
+				user.setIdUser(rs.getInt("id"));
+				user.setNombre(rs.getString("name"));
+				user.setApellido(rs.getString("lastname"));
+				user.setTelefono(rs.getLong("tel"));
+				user.setImage(rs.getString("image"));
+				user.setBirhtdate(rs.getString("cumple"));
+				user.setSexo(rs.getString("sexo"));
+				user.setFrase(rs.getString("frase"));
+				user.setPais(rs.getString("pais"));
+				user.setNombreUsuario(rs.getString("user_name"));
+				user.setNumeroAmigos(rs.getInt("numeroAmigos"));
+				
+			}else {
+				user.setIdUser(-1); // de que no encontró usuario
+			}
+		}catch(SQLException sqle) {
+			System.out.println("Error de SqlException" + sqle.getMessage());
+		}
 		
+		return user;
+	}
 		
 }

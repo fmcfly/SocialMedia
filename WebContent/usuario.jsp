@@ -1,9 +1,12 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="mx.gob.upiicsa.modelo.UsuarioBean"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
 <% HttpSession sesion = request.getSession();
-	UsuarioBean userLogin =(UsuarioBean) session.getAttribute("usuario");%>    
+	UsuarioBean userLogin =(UsuarioBean) session.getAttribute("usuario");
+	ArrayList<UsuarioBean> tablaAmigos = (ArrayList<UsuarioBean>) sesion.getAttribute("amigos"); 
+	%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,7 +93,7 @@
 			        <a class="nav-link" href="principal.jsp">Amigos</a>
 			      </li>
 			      <li class="nav-item">
-			        <a class="nav-link" href="login.jsp">Cerrar Sesión</a>
+			        <a class="nav-link" onclick="cerrarSesion()">Cerrar Sesión</a>
 			      </li>
 			    </ul>
 			    <form action ="PerfilServlet" method="GET"
@@ -134,49 +137,24 @@
 			 		<table class="table fondoAzul">
 					  <thead>
 					    <tr>
-					      <th scope="col">#</th>
 					      <th scope="col">Nombre</th>
 					      <th scope="col">Apellido</th>
-					      <th scope="col">Correo</th>
+					      <th scope="col">Imagen</th>
 					    </tr>
 					  </thead>
 					  <tbody>
-					    <tr>
-					      <th scope="row">1</th>
-					      <td>Mark</td>
-					      <td>Otto</td>
-					      <td>@mdo</td>
+					  <%
+					  for(UsuarioBean amigoEncontrado:tablaAmigos){
+					  %>
+					    <tr id="<%=amigoEncontrado.getIdUser()%>">
+					      <td><%=amigoEncontrado.getNombre() %></td>
+					      <td><%=amigoEncontrado.getApellido() %></td>
+					      <td> <img src="img/<%=amigoEncontrado.getImage()%>"class="rounded-circle imagen-tabla">  </td>
+					      <td><button class="btn btn-outline-light" onclick="enviarMensaje(<%=amigoEncontrado.getIdUser()%>)"
+					      >Mensaje</button></td>
+					      <td><button class="btn btn-outline-danger" onclick="eliminarAmigo(<%=amigoEncontrado.getIdUser()%>)">Eliminar</button></td>
 					    </tr>
-					    <tr>
-					      <th scope="row">2</th>
-					      <td>Jacob</td>
-					      <td>Thornton</td>
-					      <td>@fat</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">3</th>
-					      <td>Larry</td>
-					      <td>the Bird</td>
-					      <td>@twitter</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">3</th>
-					      <td>Larry</td>
-					      <td>the Bird</td>
-					      <td>@twitter</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">3</th>
-					      <td>Larry</td>
-					      <td>the Bird</td>
-					      <td>@twitter</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">3</th>
-					      <td>Larry</td>
-					      <td>the Bird</td>
-					      <td>@twitter</td>
-					    </tr>
+					    <%} %>
 					  </tbody>
 					</table>
 				</div>
@@ -188,6 +166,29 @@
 				</div>
 		 	</div>
 		</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+//$("h5").text("Marianiata <3");
+	function enviarMensaje(idAmigo){
+		// esta función viene de jQuery
+		$.post("/SocialMedia/MensajesServlet?idAmigo="+idAmigo,function(){
+			window.location.href = "/SocialMedia/chat.jsp";
+		});
+	}
+	
+	function eliminarAmigo(idAmigo){
+		$.get("/SocialMedia/UsuarioServlet?idAmigo="+idAmigo,function(){
+			//$("#"+idAmigo).remove();
+			window.location.href="/SocialMedia/usuario.jsp";
+		});
 		
+	}
+	
+	function cerrarSesion(){
+		$.get("/SocialMedia/LoginServlet",function(){
+			window.location.href = "/SocialMedia/login.jsp";
+		});
+	}
+</script>		
 </body>
 </html>
