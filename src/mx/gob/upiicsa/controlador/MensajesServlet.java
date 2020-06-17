@@ -34,7 +34,14 @@ public class MensajesServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: Mensajes").append(request.getContextPath());
+		HttpSession sesion = request.getSession();
+		UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
+		if(userLogin != null) {
+			request.getRequestDispatcher("/usuario.jsp").forward(request, response);
+		}else {
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
+		//response.getWriter().append("Served at: Mensajes").append(request.getContextPath());
 	}
 
 	/**
@@ -42,31 +49,34 @@ public class MensajesServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//doGet(request, response);
+		//	OBTENER LOS MENSAJES
 		HttpSession sesion = request.getSession();
-		// Con el tipo de dato envoltorio de int = INTEGER podemos convertir String a enteros con el método parseInt
-		int idAmigo = Integer.parseInt( request.getParameter("idAmigo") ); // request.getParameter regresa un tipo de dato String
-		//				(convertimos el objeto a UsuarioBean)el método getAttribute regresa un objeto 
+
 		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario"); 
-		// Instanciaste al objeto MensajesDAO
-		MensajesDao mensajes = new MensajesDao();
-		// aqui invocas al método getMENSAJES()
-		sesion.setAttribute("idAmigo", idAmigo);
-		// estoy instancaindo un objeto del mismo tipo del que regresa nuestro método getMensajes de la clase MensajesDAO
-		ArrayList<MensajeBean> mensajesEncontrados = mensajes.getMensajes(idAmigo, usuarioLogeado.getIdUser());
-		if(mensajesEncontrados.size() == 0) {
-		 System.out.println("aun no hay nada");
-		 sesion.removeAttribute("idChat");
-		 sesion.removeAttribute("mensajes");
-		}else {
-			int idChat = mensajesEncontrados.get(0).getIdChat();
-			
-			sesion.setAttribute("idChat", idChat);
-			sesion.setAttribute("mensajes", mensajesEncontrados);
-		}
 		
-		// vamos a redirigir a otra pantalla de la vista
-		request.getRequestDispatcher("/chat.jsp").forward(request,response);
+		if(usuarioLogeado != null) {
+			int idAmigo = Integer.parseInt( request.getParameter("idAmigo") ); // request.getParameter regresa un tipo de dato String
+			MensajesDao mensajes = new MensajesDao();
+	
+			sesion.setAttribute("idAmigo", idAmigo);
+	
+			ArrayList<MensajeBean> mensajesEncontrados = mensajes.getMensajes(idAmigo, usuarioLogeado.getIdUser());
+			if(mensajesEncontrados.size() == 0) {
+			 System.out.println("aun no hay nada");
+			 sesion.removeAttribute("idChat");
+			 sesion.removeAttribute("mensajes");
+			}else {
+				int idChat = mensajesEncontrados.get(0).getIdChat();
+				
+				sesion.setAttribute("idChat", idChat);
+				sesion.setAttribute("mensajes", mensajesEncontrados);
+			}
+			request.getRequestDispatcher("/chat.jsp").forward(request, response);
+		}
+		else {
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			
+		}
 	}
 
 }

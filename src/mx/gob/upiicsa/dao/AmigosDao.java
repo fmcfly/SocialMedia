@@ -43,8 +43,8 @@ public class AmigosDao {
 		}
 		return listaAmigos;
 	}
-	
-	public ArrayList<UsuarioBean> encontrarlPerfil(String criterioBusqueda,int idUserLogeado){
+	//DBERÍA IR EN PERFILDAO
+	/*public ArrayList<UsuarioBean> encontrarlPerfil(String criterioBusqueda,int idUserLogeado){
 		ArrayList<UsuarioBean> listaPerfiles = new ArrayList<UsuarioBean>();
 		try {
 			//String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u where nombres like  '%"+criterioBusqueda+"%' or apellidos like '%"+criterioBusqueda+"%'";
@@ -72,9 +72,9 @@ public class AmigosDao {
 			System.out.println("Error de SQLException"+ sql.getMessage());
 		}
 		return listaPerfiles;		
-	}
+	}*/
 	
-	public int agregarAmigo(int idLogeado, int idAmigo) {
+	public int agregarAmigo(int idLogeado, int idAmigo) { // aqui debe de ir un proc, para que no se repita la amistad
 		int registroInsertado = 0;
 		int registroInsertado2 = 0;
 		try {

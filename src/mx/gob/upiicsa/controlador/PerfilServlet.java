@@ -33,13 +33,18 @@ public class PerfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		// PARA CUANDO SE REALIZA LA BUSQUEDA
 		HttpSession sesion = request.getSession();
-		UsuarioBean userLogeado = (UsuarioBean) sesion.getAttribute("usuario");
-		AmigosDao amigosDao =new AmigosDao();
-		ArrayList<UsuarioBean> perfilesEncontrados = amigosDao.encontrarlPerfil(request.getParameter("nombre"),userLogeado.getIdUser());
-		sesion.setAttribute("perfiles", perfilesEncontrados);
-		request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+		UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
+		if(userLogin != null) {
+			PerfilDao perfilDao = new PerfilDao(); 
+			ArrayList<UsuarioBean> perfilesEncontrados = perfilDao.encontrarlPerfil(request.getParameter("nombre"),userLogin.getIdUser());
+			sesion.setAttribute("perfiles", perfilesEncontrados);
+			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+		}
+		else {
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -56,11 +61,12 @@ public class PerfilServlet extends HttpServlet {
 		int idAmigo = Integer.parseInt(request.getParameter("idUsuario"));
 		
 		AmigosDao amigosDao = new AmigosDao();
+		PerfilDao perfilDao = new PerfilDao(); 
 		int respuesta = amigosDao.agregarAmigo(usuarioLogeado.getIdUser(), idAmigo);
 		System.out.println(respuesta);
 		if(respuesta > 0) {
 			PerfilDao perfil = new PerfilDao();
-			ArrayList<UsuarioBean> perfilesEncontrados = amigosDao.encontrarlPerfil(request.getParameter("nombre"),usuarioLogeado.getIdUser());
+			ArrayList<UsuarioBean> perfilesEncontrados = perfilDao.encontrarlPerfil(request.getParameter("nombre"),usuarioLogeado.getIdUser());
 			usuarioLogeado = perfil.actualizarInfoLogueado(usuarioLogeado.getIdUser());
 			sesion.setAttribute("perfiles", perfilesEncontrados);
 			sesion.setAttribute("usuario", usuarioLogeado);

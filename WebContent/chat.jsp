@@ -5,25 +5,25 @@
     pageEncoding="ISO-8859-1"%>
     <%
     HttpSession sesion = request.getSession();
-    ArrayList<MensajeBean> mensajes = new ArrayList<MensajeBean>();
-    if(sesion.getAttribute("mensajes") != null){
-    	mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");	
-    }
     
-    UsuarioBean user = (UsuarioBean) sesion.getAttribute("usuario");
+    
+    UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
     %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Social Media</title>
-
 <link rel="stylesheet" href="css/estilos.css" type="text/css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script type="text/javascript" src="javascript/mensajes.js"></script>
 <script type="text/javascript" src="javascript/funciones.js"></script>
 </head>
 <body>
+<%if(userLogin != null){
+	ArrayList<MensajeBean> mensajes = new ArrayList<MensajeBean>();
+	mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes"); %>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="login.jsp">SocialMedia</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,10 +36,7 @@
         <a class="nav-link" href="usuario.jsp">Perfil</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="principal.jsp">Amigos <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="login.jsp">Cerrar Sesión</a>
+        <a class="nav-link" onclick="cerrarSesion()">Cerrar Sesión</a>
       </li>
     </ul>
     <form action ="PerfilServlet" method="GET"
@@ -51,7 +48,7 @@
 </nav>
 <div class="container">
 	<%for(MensajeBean mensaje: mensajes) {
-		if(mensaje.getIdUsuario() == user.getIdUser()){ %>
+		if(mensaje.getIdUsuario() == userLogin.getIdUser()){ %>
 		<div class="mensajeUsuario">
 			<div class="card border border-success " style="width: 18rem;">
 			  <div class="card-body">
@@ -83,5 +80,14 @@
 		<button class="botonEnviarMensaje btn-primary" onclick="enviarMensaje()">Enviar</button>
 	</div>
 </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="javascript/autenticacion.js"></script>
+<%}
+else{%>
+<script>
+alert("La sesión expiró");
+window.location.href = "/SocialMedia/login.jsp";
+</script>
+<%} %>
 </body>
 </html>

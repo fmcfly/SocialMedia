@@ -4,8 +4,7 @@
     pageEncoding="ISO-8859-1"%>
     
 <% HttpSession sesion = request.getSession();
-	UsuarioBean userLogin =(UsuarioBean) session.getAttribute("usuario");
-	ArrayList<UsuarioBean> tablaAmigos = (ArrayList<UsuarioBean>) sesion.getAttribute("amigos"); 
+	UsuarioBean userLogin =(UsuarioBean) session.getAttribute("usuario"); 
 	%>    
 <!DOCTYPE html>
 <html>
@@ -15,69 +14,11 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link href="css/usuario.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-<script>
-	function cambiando(){
-		let element = document.getElementById("sexo");
-		element.innerHTML ="<div class='form-check form-check-inline'>" +
-							 "<label class='form-check-label' for='inlineRadio1'>Sexo</label>"+
-						   "</div>"+
-							"<div class='form-check form-check-inline'>" +
-							 "<input class='form-check-input' type='radio' name='radioSexo' id='inlineRadio1' value='F'>"+
-							 "<label class='form-check-label' for='inlineRadio1'>F</label>"+
-						   "</div>"+
-						   "<div class='form-check form-check-inline'>"+
-							  "<input class='form-check-input' type='radio' name='radioSexo' id='inlineRadio2' value='M'>"+
-							  "<label class='form-check-label' for='inlineRadio2'>M</label>"+
-					  	   "</div>";
-		
-		let elementFrase = document.getElementById("frase");
-		elementFrase.innerHTML ="<input class='form-control' id = 'estado' name='estadoPerfil' placeholder='Estado'>";
-		
-		let elementNombreUsuario = document.getElementById("nombreUsuario");
-		elementNombreUsuario.innerHTML ="<input class='form-control' id='userName' name='nombreUsuario' placeholder='NombreDeUsuario'>";
-		
-		let elementBirhtdate = document.getElementById("birhtdate");
-		elementBirhtdate.innerHTML ="<input class='form-control' id='cumple' name='cumple' type='date'>";
-		
-		let elementPais = document.getElementById("pais");
-		elementPais.innerHTML ="<input class='form-control' id='paiss' name='pais' placeholder='Pais'>";
-		
-		let elementBoton = document.getElementById("btn-editar");
-		elementBoton.innerHTML ="<button class='btn btn-outline-primary mx-sm-2' onclick='guardar()'>Guardar</button>"+
-		"<button class='btn btn-outline-danger'>Cancelar</button>";
-	}
-	
-	function guardar(){
-		/*let valorestado = document.getElementById("estado").value;
-		console.log(valorestado);
-		
-		let valorNombreUsuario = document.getElementById("userName").value;
-		console.log(valorNombreUsuario);
-		
-		let valorBirhtdate = document.getElementById("cumple").value;
-		console.log(valorBirhtdate);
-		
-		let valorPais = document.getElementById("paiss").value;
-		console.log(valorPais);*/
-			//esto trae un arreglo de radios
-		let radioSexo = document.getElementsByName("radioSexo");
-		
-		let valorSexo = "";
-		
-		for(let radio of radioSexo){
-			if(radio.checked ==true){
-				valorSexo = radio.value;
-			}
-		}
-		console.log(valorSexo);
-		let formEditar = document.getElementById("infoUser");
-		formEditar.action = "/SocialMedia/EditarUsuario?sexo="+valorSexo;
-		formEditar.method="POST";
-		formEditar.submit();
-	}
-</script>
+
 </head>
 <body>
+<%if(userLogin != null){
+	ArrayList<UsuarioBean> tablaAmigos = (ArrayList<UsuarioBean>) sesion.getAttribute("amigos"); %>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			  <a class="navbar-brand" href="login.jsp">SocialMedia</a>
 			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,9 +29,6 @@
 			    <ul class="navbar-nav mr-auto">
 			   	  <li class="nav-item active">
 			        <a class="nav-link" href="usuario.jsp">Perfil<span class="sr-only">(current)</span></a>
-			      </li>
-			      <li class="nav-item">
-			        <a class="nav-link" href="principal.jsp">Amigos</a>
 			      </li>
 			      <li class="nav-item">
 			        <a class="nav-link" onclick="cerrarSesion()">Cerrar Sesión</a>
@@ -149,7 +87,7 @@
 					    <tr id="<%=amigoEncontrado.getIdUser()%>">
 					      <td><%=amigoEncontrado.getNombre() %></td>
 					      <td><%=amigoEncontrado.getApellido() %></td>
-					      <td> <img src="img/<%=amigoEncontrado.getImage()%>"class="rounded-circle imagen-tabla">  </td>
+					      <td> <img src="img/<%=((amigoEncontrado.getImage()== null)? "default.jpg" : amigoEncontrado.getImage())%>"class="rounded-circle imagen-tabla">  </td>
 					      <td><button class="btn btn-outline-light" onclick="enviarMensaje(<%=amigoEncontrado.getIdUser()%>)"
 					      >Mensaje</button></td>
 					      <td><button class="btn btn-outline-danger" onclick="eliminarAmigo(<%=amigoEncontrado.getIdUser()%>)">Eliminar</button></td>
@@ -168,6 +106,88 @@
 		</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+	let infoUsuario = {
+			estado:"<%=((userLogin.getFrase()==null) ? "":userLogin.getFrase())%>",
+			username:"<%=((userLogin.getNombreUsuario()==null) ? "":userLogin.getNombreUsuario())%>",
+			cumple:"<%=((userLogin.getBirhtdate() ==null) ? "":userLogin.getBirhtdate())%>",
+			sexo:"<%=((userLogin.getSexo() ==null) ? "":userLogin.getSexo())%>",
+			pais:"<%=((userLogin.getPais()==null) ? "":userLogin.getPais())%>"
+	};
+	console.log(infoUsuario);
+	
+	function cambiando(){
+		//obteniendo elementos por jQuery
+		let checkF = "";
+		let checkM = "";
+		if(infoUsuario.sexo == 'F'){
+			checkF="checked";
+		}else{
+			checkM="checked";
+		}
+		$("#sexo").html("<div class='form-check form-check-inline'>" +
+				 "<label class='form-check-label' for='inlineRadio1'>Sexo</label>"+
+				   "</div>"+
+					"<div class='form-check form-check-inline'>" +
+					 "<input class='form-check-input' type='radio' name='radioSexo' id='inlineRadio1' value='F' "+ checkF +">"+
+					 "<label class='form-check-label' for='inlineRadio1'>F</label>"+
+				   "</div>"+
+				   "<div class='form-check form-check-inline'>"+
+					  "<input class='form-check-input' type='radio' name='radioSexo' id='inlineRadio2' value='M' "+checkM+">"+
+					  "<label class='form-check-label' for='inlineRadio2'>M</label>"+
+			  	   "</div>");
+		
+		$("#frase").html("<input class='form-control' type='text' id = 'estado' name='estadoPerfil' placeholder='Estado' value='"+infoUsuario.estado+"'>");
+		
+	/*	let elementFrase = document.getElementById("frase");
+		elementFrase.innerHTML =";*/
+		
+		let elementNombreUsuario = document.getElementById("nombreUsuario");
+		elementNombreUsuario.innerHTML ="<input class='form-control' id='userName' name='nombreUsuario' placeholder='NombreDeUsuario' value="+infoUsuario.username+">";
+		
+		let elementBirhtdate = document.getElementById("birhtdate");
+		elementBirhtdate.innerHTML ="<input class='form-control' id='cumple' name='cumple' type='date' value="+infoUsuario.cumple+">";
+		
+		let elementPais = document.getElementById("pais");
+		elementPais.innerHTML ="<input class='form-control' id='paiss' name='pais' placeholder='Pais' value="+infoUsuario.pais+">";
+		
+		let elementBoton = document.getElementById("btn-editar");
+		elementBoton.innerHTML ="<button class='btn btn-outline-primary mx-sm-2' onclick='guardar()'>Guardar</button>"+
+		"<button class='btn btn-outline-danger' onclick='cancelar()'>Cancelar</button>";
+	}
+	
+	function cancelar(){
+		//window.location.href = "/SocialMedia/usuario.jsp";
+		location.reload();
+	}
+	
+	function guardar(){
+		/*let valorestado = document.getElementById("estado").value;
+		console.log(valorestado);
+		
+		let valorNombreUsuario = document.getElementById("userName").value;
+		console.log(valorNombreUsuario);
+		
+		let valorBirhtdate = document.getElementById("cumple").value;
+		console.log(valorBirhtdate);
+		
+		let valorPais = document.getElementById("paiss").value;
+		console.log(valorPais);*/
+			//esto trae un arreglo de radios
+		let radioSexo = document.getElementsByName("radioSexo");
+		
+		let valorSexo = "";
+		
+		for(let radio of radioSexo){
+			if(radio.checked ==true){
+				valorSexo = radio.value;
+			}
+		}
+		console.log(valorSexo);
+		let formEditar = document.getElementById("infoUser");
+		formEditar.action = "/SocialMedia/EditarUsuario?sexo="+valorSexo;
+		formEditar.method="POST";
+		formEditar.submit();
+	}
 //$("h5").text("Marianiata <3");
 	function enviarMensaje(idAmigo){
 		// esta función viene de jQuery
@@ -183,12 +203,17 @@
 		});
 		
 	}
-	
-	function cerrarSesion(){
-		$.get("/SocialMedia/LoginServlet",function(){
-			window.location.href = "/SocialMedia/login.jsp";
-		});
+</script>
+<script src="javascript/autenticacion.js"></script>	
+<% } //ESTA LLAVE CIERRA EL IF QUE VALIDA SI HAY UN USUARIO EN LA SESIÓN
+else{%>
+<script>
+	alert("La sesión expiró");
+	window.location.href = "/SocialMedia/login.jsp"
+</script>	
+
+<%	
 	}
-</script>		
+%>	
 </body>
 </html>

@@ -54,6 +54,7 @@
 		    <p class="card-text"><%=amigo.getCorreo() %></p>
 		    
 		    <button class="btn btn-primary" onclick="friend(<%=amigo.getIdUser()%>)">Mensaje</button>
+		    
 		  </div>
 		</div>
 		

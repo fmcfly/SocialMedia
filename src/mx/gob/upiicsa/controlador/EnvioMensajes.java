@@ -34,7 +34,13 @@ public class EnvioMensajes extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: Envio").append(request.getContextPath());
+		HttpSession sesion = request.getSession();
+		UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
+		if(userLogin != null) {
+			request.getRequestDispatcher("/usuario.jsp").forward(request, response);
+		}else {
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
 	}
 
 	/**

@@ -7,7 +7,7 @@
 	HttpSession sesion = request.getSession();
 	UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario"); 
 //instancio un objeto arraylist de tipo UsuarioBean y le asigno lo que este guardando en la sesion con el nombre "perfiles"
-	ArrayList<UsuarioBean> listaPerfiles = (ArrayList<UsuarioBean>) sesion.getAttribute("perfiles");
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,9 @@
 <script type="text/javascript" src="javascript/funciones.js"></script>
 </head>
 <body>
-
+<% if(userLogin != null){
+	ArrayList<UsuarioBean> listaPerfiles = (ArrayList<UsuarioBean>) sesion.getAttribute("perfiles");
+%>
  <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="login.jsp">SocialMedia</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,11 +32,8 @@
       <li class="nav-item">
         <a class="nav-link" href="usuario.jsp">Perfil</a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="principal.jsp">Amigos <span class="sr-only">(current)</span></a>
-      </li>
       <li class="nav-item">
-        <a class="nav-link" href="login.jsp">Cerrar Sesión</a>
+        <a class="nav-link" onclick="cerrarSesion()">Cerrar Sesión</a>
       </li>
     </ul>
     <form action ="PerfilServlet" method="GET"
@@ -70,5 +69,14 @@
 	</div>
 	
 </form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="javascript/autenticacion.js"></script>
+<% }
+else{%>
+<script>
+alert("La sesión expiró");
+window.location.href = "/SocialMedia/login.jsp";
+</script>
+<% } %>
 </body>
 </html>
