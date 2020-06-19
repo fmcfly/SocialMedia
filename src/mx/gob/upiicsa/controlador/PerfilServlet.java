@@ -70,13 +70,13 @@ public class PerfilServlet extends HttpServlet {
 			usuarioLogeado = perfil.actualizarInfoLogueado(usuarioLogeado.getIdUser());
 			sesion.setAttribute("perfiles", perfilesEncontrados);
 			sesion.setAttribute("usuario", usuarioLogeado);
-			
+			System.out.println("!!!!!!!!!!!!!!!!!ENTRO");
 			ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
 			sesion.setAttribute("amigos", listaAmigos);
 			
-			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+			//request.getRequestDispatcher("/perfil.jsp").forward(request,response);
 		}else {
-			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+			//request.getRequestDispatcher("/perfil.jsp").forward(request,response);
 		}
 	}
 

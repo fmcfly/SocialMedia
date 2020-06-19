@@ -38,6 +38,7 @@ public class LoginDao {
 			}else {
 				user.setIdUser(-1); // de que no encontró usuario
 			}
+			con.close();
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}

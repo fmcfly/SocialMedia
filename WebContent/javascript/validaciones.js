@@ -4,6 +4,8 @@ function validar()
 	
 	let apellido = document.getElementById("apellidoInput").value ;
 	
+	let userName = document.getElementById("usernameInput").value ;
+	
 	let correo = document.getElementById("correoInput").value ;
 	
 	let telefono = document.getElementById("telefonoInput").value ;

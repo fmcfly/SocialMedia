@@ -3,6 +3,7 @@ package mx.gob.upiicsa.modelo;
 import java.sql.Date;
 
 public class MensajeBean {
+	private int idMensaje;
 	private int idChat;
 	private int idUsuario;
 	private String texto;
@@ -33,6 +34,10 @@ public class MensajeBean {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	
-	
+	public int getIdMensaje() {
+		return idMensaje;
+	}
+	public void setIdMensaje(int idMensaje) {
+		this.idMensaje = idMensaje;
+	}
 }

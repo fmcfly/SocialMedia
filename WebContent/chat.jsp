@@ -16,13 +16,14 @@
 <title>Social Media</title>
 <link rel="stylesheet" href="css/estilos.css" type="text/css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script type="text/javascript" src="javascript/mensajes.js"></script>
-<script type="text/javascript" src="javascript/funciones.js"></script>
+
 </head>
 <body>
 <%if(userLogin != null){
 	ArrayList<MensajeBean> mensajes = new ArrayList<MensajeBean>();
-	mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes"); %>
+	if(sesion.getAttribute("mensajes") != null){
+    	mensajes = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");	
+    } %>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="login.jsp">SocialMedia</a>
@@ -69,19 +70,23 @@
 		</div>
 	<%}// cierra else
 	} //cierrra for%>
-	
+	<div id="newMessage" class="newMessage">
+		
+	</div>
 </div>
-<form class="row" id="envio" >
+<div class="row" id="envio" >
 	<div class="col-6">
 	    <label>Mensaje:</label>
 	    <textarea class="form-control" id="message" rows="4" name="mensaje" style="width: 367px;"></textarea>
 	</div>
 	<div class="col-2">
-		<button class="botonEnviarMensaje btn-primary" onclick="enviarMensaje()">Enviar</button>
+		<button class="botonEnviarMensaje btn-primary" onclick="envioMensaje()">Enviar</button>
 	</div>
-</form>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="javascript/autenticacion.js"></script>
+<script type="text/javascript" src="javascript/mensajes.js"></script>
+<script type="text/javascript" src="javascript/funciones.js"></script>
 <%}
 else{%>
 <script>

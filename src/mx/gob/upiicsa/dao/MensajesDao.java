@@ -13,14 +13,14 @@ public class MensajesDao {
 	private Statement st;
 	private ResultSet rs;
 	
-	public MensajesDao(){
-		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
-		con = conexionBD.getConexion();
-	}
+	public MensajesDao(){}
 	
 	public ArrayList<MensajeBean> getMensajes(int idAmigo, int idLogin) {
 		
 		ArrayList<MensajeBean> mensajesEncontrados = new ArrayList<MensajeBean>(); 
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
 		
 		String queryMensajes ="select  id_chat, id_usuario, texto, fecha  from Mensajes\r\n" + 
 				"	where id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idAmigo+" and\r\n" + 
@@ -36,6 +36,8 @@ public class MensajesDao {
 				msjBean.setFecha(rs.getDate("fecha"));
 				mensajesEncontrados.add(msjBean);
 			}
+			con.close();
+
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}
@@ -46,6 +48,9 @@ public class MensajesDao {
 		String queryInsertar ="insert into Mensajes values ("+ msjNuevo.getIdChat() + "," + msjNuevo.getIdUsuario() + ",'" 
 							+ msjNuevo.getTexto() + "',now())";
 		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		
 		try {
 			st = con.createStatement();
 			int registrosInsertados = st.executeUpdate(queryInsertar);
@@ -54,6 +59,7 @@ public class MensajesDao {
 			}else {
 				System.out.println("Algo salio mal");
 			}
+			con.close();
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}	
@@ -61,35 +67,35 @@ public class MensajesDao {
 	
 	public void crearChat(MensajeBean msjNuevo,int idAmigo) {
 		String queryCrearChat =  "select MAX(id_chat) as ultimochat from chat";
-		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
 		try {
-		st= con.createStatement();
-		
-		rs= st.executeQuery(queryCrearChat);
-		rs.next();
-		System.out.println(rs.getInt("ultimochat"));
-		int chatMax = rs.getInt("ultimochat");
-		chatMax++;
-		// CREAMOS EL ICHAT 
-		String queryInsertar = "insert into chat values(" + chatMax +",curdate())";
-		int registroInsertar = st.executeUpdate(queryInsertar);
-		if(registroInsertar >0) {// SI SE CREO CORRECTAEMNTE CON EL ID PROSEGUIMOS A CREAR LA RELACIÓN DE LOS UAURIOS 
-			System.out.println("Se creo chat");
-			String queryRelacionLogeado = "insert into Rel_Chat_Usuarios values("+chatMax+","+ msjNuevo.getIdUsuario()+")";
-			String queryRelacionAmigo = "insert into Rel_Chat_Usuarios values("+chatMax+","+idAmigo+")";
+			st= con.createStatement();
 			
-			int insercionLogeado = st.executeUpdate(queryRelacionLogeado);
-			int insercionAmigo = st.executeUpdate(queryRelacionAmigo);
-			if(insercionAmigo > 0 && insercionLogeado  >0) {
-				msjNuevo.setIdChat(chatMax);
-				guardarMensaje(msjNuevo);
+			rs= st.executeQuery(queryCrearChat);
+			rs.next();
+			System.out.println(rs.getInt("ultimochat"));
+			int chatMax = rs.getInt("ultimochat");
+			chatMax++;
+			// CREAMOS EL ICHAT 
+			String queryInsertar = "insert into chat values(" + chatMax +",curdate())";
+			int registroInsertar = st.executeUpdate(queryInsertar);
+			if(registroInsertar >0) {// SI SE CREO CORRECTAEMNTE CON EL ID PROSEGUIMOS A CREAR LA RELACIÓN DE LOS UAURIOS 
+				System.out.println("Se creo chat");
+				String queryRelacionLogeado = "insert into Rel_Chat_Usuarios values("+chatMax+","+ msjNuevo.getIdUsuario()+")";
+				String queryRelacionAmigo = "insert into Rel_Chat_Usuarios values("+chatMax+","+idAmigo+")";
+				
+				int insercionLogeado = st.executeUpdate(queryRelacionLogeado);
+				int insercionAmigo = st.executeUpdate(queryRelacionAmigo);
+				if(insercionAmigo > 0 && insercionLogeado > 0) {
+					msjNuevo.setIdChat(chatMax);
+					guardarMensaje(msjNuevo);
+				}
+			}else {
+				System.out.println("Algo fallo");
 			}
 			
-			
-		}else {
-			System.out.println("Algo fallo");
-		}
-		
+			con.close();
 		}catch(SQLException sqle) {
 			System.out.println("Error de SQLException"+ sqle.getMessage());
 		}

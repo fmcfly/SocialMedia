@@ -53,7 +53,7 @@ public class MensajesServlet extends HttpServlet {
 		HttpSession sesion = request.getSession();
 
 		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario"); 
-		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!" + request.getParameter("idAmigo"));
 		if(usuarioLogeado != null) {
 			int idAmigo = Integer.parseInt( request.getParameter("idAmigo") ); // request.getParameter regresa un tipo de dato String
 			MensajesDao mensajes = new MensajesDao();
@@ -62,20 +62,18 @@ public class MensajesServlet extends HttpServlet {
 	
 			ArrayList<MensajeBean> mensajesEncontrados = mensajes.getMensajes(idAmigo, usuarioLogeado.getIdUser());
 			if(mensajesEncontrados.size() == 0) {
-			 System.out.println("aun no hay nada");
-			 sesion.removeAttribute("idChat");
-			 sesion.removeAttribute("mensajes");
+				 sesion.removeAttribute("idChat");
+				 sesion.removeAttribute("mensajes");
 			}else {
 				int idChat = mensajesEncontrados.get(0).getIdChat();
 				
 				sesion.setAttribute("idChat", idChat);
 				sesion.setAttribute("mensajes", mensajesEncontrados);
 			}
-			request.getRequestDispatcher("/chat.jsp").forward(request, response);
+			//request.getRequestDispatcher("/chat.jsp").forward(request, response);
 		}
 		else {
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
-			
 		}
 	}
 

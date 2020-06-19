@@ -42,14 +42,16 @@ public class RegistroDao {
 				int idMax = rs.getInt("ultimoID");
 				idMax ++;
 				
-				String AgregarNewUser = "insert into Usuarios(id,nombres,apellidos,correo,telefono,password,image) values("+idMax+""
-						+ ",'"+userNew.getNombre()+"','"+userNew.getApellido()+"','"+userNew.getCorreo()+"',"+userNew.getTelefono()+",'"+userNew.getPassword()+"','"+userNew.getImage()+"');";
+				String AgregarNewUser = "insert into Usuarios(id,nombres,apellidos,user_name,correo,telefono,password,image) values("+idMax+""
+						+ ",'"+userNew.getNombre()+"','"+userNew.getApellido()+"','"+userNew.getNombreUsuario()+"','"+userNew.getCorreo()+"',"+userNew.getTelefono()+",'"+userNew.getPassword()+"','"+userNew.getImage()+"');";
 				st = con.createStatement();
 				registroInsertado  = st.executeUpdate(AgregarNewUser);
 				if(registroInsertado < 1){
 					return -1; //no se pudo registrar
 				}
 			}
+			con.close();
+
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}

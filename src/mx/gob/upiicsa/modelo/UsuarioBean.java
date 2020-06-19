@@ -34,13 +34,7 @@ public class UsuarioBean {
 		this.frase = frase;
 	}
 
-	public String getNombreUsuario() {
-		return nombreUsuario;
-	}
-
-	public void setNombreUsuario(String nombreUsuario) {
-		this.nombreUsuario = nombreUsuario;
-	}
+	
 
 	public String getBirhtdate() {
 		return birhtdate;
@@ -76,9 +70,10 @@ public class UsuarioBean {
 		
 	}
 	
-	public UsuarioBean(String nombre,String apellido,String correo,long telefono,String password) {
+	public UsuarioBean(String nombre,String apellido,String nombreUsuario, String correo,long telefono,String password) {
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.nombreUsuario = nombreUsuario;
 		this.correo = correo;
 		this.telefono = telefono;
 		this.password = password;
@@ -101,6 +96,13 @@ public class UsuarioBean {
 	}
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 	public String getCorreo() {
 		return correo;

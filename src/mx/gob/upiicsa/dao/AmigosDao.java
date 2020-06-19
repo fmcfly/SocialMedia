@@ -16,14 +16,16 @@ public class AmigosDao {
 	
 	
 	public AmigosDao() {
-		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
-		con = conexionBD.getConexion();
+		
 	}
 	
 	public ArrayList<UsuarioBean> encontrarAmigos(int idusuario) {
 		//Arreglo es un espacio de memoria, y que guarda cierta cantidad de datos de un mismo tipo
 		// ArrayList en un arreglo que nos permite guardar objetos en cada uno de sus espacios no es de tipo primitivo, es un objeto
 		ArrayList<UsuarioBean> listaAmigos = new ArrayList<UsuarioBean>(); // va a guardar objetos de tipo UsuarioBean 
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
 		
 		try {
 			String query = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u inner join relationship r on u.id = r.idamigo where r.iduser = "+idusuario;
@@ -38,6 +40,7 @@ public class AmigosDao {
 				amigo.setImage(rs.getString("image"));
 				listaAmigos.add(amigo);
 			}
+			con.close();
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}
@@ -77,6 +80,10 @@ public class AmigosDao {
 	public int agregarAmigo(int idLogeado, int idAmigo) { // aqui debe de ir un proc, para que no se repita la amistad
 		int registroInsertado = 0;
 		int registroInsertado2 = 0;
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		
 		try {
 			String queryAgregarAmigo = " insert into relationship values (" + idLogeado +", "+ idAmigo + ");";
 			String queryAgregarLogeado =  "insert into relationship values (" + idAmigo +"," + idLogeado + ");";
@@ -87,7 +94,8 @@ public class AmigosDao {
 			registroInsertado = st.executeUpdate(queryAgregarAmigo);
 			if(registroInsertado > 0)
 				registroInsertado2 = st.executeUpdate(queryAgregarLogeado);
-			
+			con.close();
+	
 		}catch(SQLException sql) {
 			System.out.println("Error de SQLException"+ sql.getMessage());
 		}
@@ -97,6 +105,10 @@ public class AmigosDao {
 	public int eliminarAmigo(int idLogueado, int idAmigo) {
 		String eliminarAmigo = "{call eliminarAmigo (?,?)}";
 		int registrosAfectados = 0;
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		
 		try {
 			CallableStatement ctmt = con.prepareCall(eliminarAmigo);
 			ctmt.setInt(1, idAmigo);

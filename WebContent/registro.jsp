@@ -27,8 +27,16 @@
 	
 	      <label >Apellido:</label>
 	      <input type="text" class="form-control" id="apellidoInput" name="Apellido"  >
-	 
-	
+		  
+		  
+	      <label  >Nombre de usuario:</label>
+		  <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+            <input type="text" class="form-control" id="usernameInput" name="userName"  >
+          </div>
+		  
 	      <label >Correo:</label>
 	      <input type="email" class="form-control" id="correoInput" name="Correo">
 	      

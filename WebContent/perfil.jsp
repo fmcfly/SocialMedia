@@ -43,18 +43,18 @@
     </form>
   </div>
 </nav>
-<form class="container" id="agregar">
+<div class="container" id="agregar">
 	<div class="form-inline">
 		<%for(UsuarioBean usuario:listaPerfiles) { 
 		String nombre = usuario.getNombre()+" "+ usuario.getApellido();%>
 		<div class="card mx-sm-2 mb-1" style="width: 18rem; ">
-		  <img class="card-img-top" src="img/<%=usuario.getImage() %>" style="height:300px;" alt="Card image cap">
+		  <img class="card-img-top" src="img/<%=(usuario.getImage() == null ? "default.jpg" : usuario.getImage()) %>" style="height:300px;" alt="Card image cap">
 		  <div class="card-body">
 		    <h5 class="card-title"><%=nombre %></h5>
 		    <p class="card-text"><%=usuario.getCorreo() %></p>
 		    <%if (usuario.getIdUser() != userLogin.getIdUser()){
 		   			if(usuario.getAmigo() == 0){ %>	
-				    	<button onclick="agregarAmigo(<%=usuario.getIdUser()%>,<%=request.getParameter("nombre")%>)"
+				    	<button onclick="addFriend(<%=usuario.getIdUser()%>,<%=request.getParameter("nombre")%>)"
 				    	class="btn btn-primary">Agregar</button>
 		    <%		}else{%>
 		    			<button onclick="sendMessage(<%=usuario.getIdUser()%>)"
@@ -68,9 +68,10 @@
 		<%} %>
 	</div>
 	
-</form>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="javascript/autenticacion.js"></script>
+<script src="javascript/amigos.js"></script>
 <% }
 else{%>
 <script>

@@ -14,13 +14,14 @@ public class PerfilDao {
 	private Statement st;
 	private ResultSet rs;
 	
-	public PerfilDao() {
-		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
-		con = conexionBD.getConexion();
-	}
+	public PerfilDao() {}
 	
 	public UsuarioBean updateUser(UsuarioBean usuario) {
 		String procUpdate = "{ call actualizar_Usuario (?,?,?,?,?,?)}";
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		
 		try {
 			CallableStatement ctmt = con.prepareCall(procUpdate);
 			ctmt.setInt(1, usuario.getIdUser());
@@ -34,6 +35,7 @@ public class PerfilDao {
 			if(registrosAfectados < 0) {
 				usuario.setIdUser(-1);
 			}
+			con.close();
 
 		}catch(SQLException sqle) { 
 			System.out.println("Error de SqlException" + sqle.getMessage());
@@ -44,6 +46,10 @@ public class PerfilDao {
 	public UsuarioBean actualizarInfoLogueado(int idUsuarioLogueado) {
 		UsuarioBean user = new UsuarioBean();
 		String procedure = "{ call update_login(?)}";
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		
 		try {
 			CallableStatement cllst = con.prepareCall(procedure);
 			cllst.setInt(1,idUsuarioLogueado);
@@ -65,6 +71,8 @@ public class PerfilDao {
 			}else {
 				user.setIdUser(-1); // de que no encontró usuario
 			}
+			con.close();
+
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}
@@ -75,6 +83,10 @@ public class PerfilDao {
 	//DBERÍA IR EN PERFILDAO
 	public ArrayList<UsuarioBean> encontrarlPerfil(String criterioBusqueda,int idUserLogeado){
 		ArrayList<UsuarioBean> listaPerfiles = new ArrayList<UsuarioBean>();
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		
 		try {
 			//String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image from Usuarios u where nombres like  '%"+criterioBusqueda+"%' or apellidos like '%"+criterioBusqueda+"%'";
 			String queryEncontarPerfil = "select u.id as id ,u.nombres as nombre, u.apellidos as apellido, u.correo as correo,u.image as image,\r\n" + 
@@ -97,6 +109,8 @@ public class PerfilDao {
 				usuario.setAmigo(rs.getInt("amigo"));
 				listaPerfiles.add(usuario);
 			}
+			con.close();
+
 		}catch(SQLException sql) {
 			System.out.println("Error de SQLException"+ sql.getMessage());
 		}

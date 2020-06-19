@@ -109,6 +109,8 @@ public class UsuarioServlet extends HttpServlet {
 							usuarioNuevo.setNombre(fileItem.getString());// SI EL NOMBRE ES IGUAL AL ESPECIFICADO LE VAS A SETEAR EL VALOR DEL FILEITEM EN SU ATRIBUTO CORRESPONDIENTE DEL USUARIOBEAN
 						else if(fileItem.getFieldName().equals("Apellido")) 
 							usuarioNuevo.setApellido(fileItem.getString());
+						else if(fileItem.getFieldName().equals("userName")) 
+							usuarioNuevo.setNombreUsuario(fileItem.getString());
 						else if(fileItem.getFieldName().equals("Correo")) 
 							usuarioNuevo.setCorreo(fileItem.getString());
 						else if(fileItem.getFieldName().equals("Telefono")) 
