@@ -22,8 +22,13 @@ function agregarAmigo(idUsuario,criterioBusqueda){
 }
 
 function sendMessage(idUsuario){
-	let formAgregar = document.getElementById("agregar");
+	
+	$.post("/SocialMedia/MensajesServlet?idAmigo="+idUsuario,function(){
+		window.location.href = "/SocialMedia/chat.jsp";
+		//location.reload();
+	});	
+	/*let formAgregar = document.getElementById("agregar");
 	formAgregar.action = "/SocialMedia/MensajesServlet?idAmigo="+idUsuario;
 	formAgregar.method = "POST";
-	formAgregar.submit();// enviamos
+	formAgregar.submit();// enviamos*/
 }

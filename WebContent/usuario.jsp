@@ -52,7 +52,7 @@
 						<p id="frase"><%=((userLogin.getFrase()==null) ? "No hay datos":userLogin.getFrase())%></p>
 					</div>
 					<div class="col-sm-4 imagenPerfil">
-						<img src="img/<%=(userLogin.getImage() == null ? "default.jpg" : userLogin.getImage())%>" alt="Foto de perfil" class="rounded-circle" style="width:180px">
+						<img src="img/<%=((userLogin.getImage() == null || userLogin.getImage().equals("")) ? "default.jpg" : userLogin.getImage())%>" alt="Foto de perfil" class="rounded-circle" style="width:180px">
 						<h5 id="nombreUsuario"><%=userLogin.getNombreUsuario() %></h5>
 					</div>
 				</div>

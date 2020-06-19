@@ -136,6 +136,10 @@ public class UsuarioServlet extends HttpServlet {
 							}
 							//fileItem.write(new File("/SocialMedia/WebContent/img/"+fileItem.getName()));
 							//fileItem.write(new File("C:\\Users\\DELL\\Escritorio\\Proyectos_Java\\SocialMedia\\WebContent\\img\\"+fileItem.getName()));
+						}else {
+							usuarioNuevo.setImage(fileItem.getName());
+							int statusRegistro = registroDao.crearUsuario(usuarioNuevo);
+							request.getRequestDispatcher("/login.jsp").forward(request,response);
 						}
 					}
 					

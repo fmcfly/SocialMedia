@@ -1,5 +1,6 @@
 package mx.gob.upiicsa.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,15 +46,18 @@ public class MensajesDao {
 	}
 	
 	public void guardarMensaje(MensajeBean msjNuevo) {
-		String queryInsertar ="insert into Mensajes values ("+ msjNuevo.getIdChat() + "," + msjNuevo.getIdUsuario() + ",'" 
-							+ msjNuevo.getTexto() + "',now())";
-		
 		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
 		con = conexionBD.getConexion();
 		
+		String insertar_mensaje = "{call insertar_mensaje (?,?,?)}";
+		
 		try {
-			st = con.createStatement();
-			int registrosInsertados = st.executeUpdate(queryInsertar);
+			CallableStatement ctmt = con.prepareCall(insertar_mensaje);
+			ctmt.setInt (1,msjNuevo.getIdChat());
+			ctmt.setInt (2,msjNuevo.getIdUsuario());
+			ctmt.setString(3, msjNuevo.getTexto());
+			
+			int registrosInsertados = ctmt.executeUpdate();
 			if(registrosInsertados > 0) {
 				System.out.println("Todo en orden");
 			}else {
