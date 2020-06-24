@@ -75,9 +75,10 @@
 			 		<table class="table fondoAzul">
 					  <thead>
 					    <tr>
+					      <th scope="col"></th>
 					      <th scope="col">Nombre</th>
 					      <th scope="col">Apellido</th>
-					      <th scope="col">Imagen</th>
+					      
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -85,9 +86,9 @@
 					  for(UsuarioBean amigoEncontrado:tablaAmigos){
 					  %>
 					    <tr id="<%=amigoEncontrado.getIdUser()%>">
+					      <td> <img src="img/<%=((amigoEncontrado.getImage()== null || amigoEncontrado.getImage().equals(""))? "default.jpg" : amigoEncontrado.getImage())%>"class="rounded-circle imagen-tabla">  </td>
 					      <td><%=amigoEncontrado.getNombre() %></td>
 					      <td><%=amigoEncontrado.getApellido() %></td>
-					      <td> <img src="img/<%=((amigoEncontrado.getImage()== null)? "default.jpg" : amigoEncontrado.getImage())%>"class="rounded-circle imagen-tabla">  </td>
 					      <td><button class="btn btn-outline-light" onclick="enviarMensaje(<%=amigoEncontrado.getIdUser()%>)"
 					      >Mensaje</button></td>
 					      <td><button class="btn btn-outline-danger" onclick="eliminarAmigo(<%=amigoEncontrado.getIdUser()%>)">Eliminar</button></td>
@@ -121,7 +122,7 @@
 		let checkM = "";
 		if(infoUsuario.sexo == 'F'){
 			checkF="checked";
-		}else{
+		}else if(infoUsuario.sexo == 'F'){
 			checkM="checked";
 		}
 		$("#sexo").html("<div class='form-check form-check-inline'>" +

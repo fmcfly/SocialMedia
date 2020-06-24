@@ -23,7 +23,7 @@ public class MensajesDao {
 		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
 		con = conexionBD.getConexion();
 		
-		String queryMensajes ="select  id_chat, id_usuario, texto, fecha  from Mensajes\r\n" + 
+		String queryMensajes ="select id_message, id_chat, id_usuario, texto, fecha  from Mensajes\r\n" + 
 				"	where id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idAmigo+" and\r\n" + 
 				"	id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idLogin+")) order by fecha asc";
 		try {
@@ -31,6 +31,7 @@ public class MensajesDao {
 			rs = st.executeQuery(queryMensajes);
 			while(rs.next()){
 				MensajeBean msjBean = new MensajeBean();
+				msjBean.setIdMensaje(rs.getInt("id_message"));
 				msjBean.setIdChat(rs.getInt("id_chat"));
 				msjBean.setIdUsuario(rs.getInt("id_usuario"));
 				msjBean.setTexto(rs.getString("texto"));
@@ -57,8 +58,8 @@ public class MensajesDao {
 			ctmt.setInt (2,msjNuevo.getIdUsuario());
 			ctmt.setString(3, msjNuevo.getTexto());
 			
-			int registrosInsertados = ctmt.executeUpdate();
-			if(registrosInsertados > 0) {
+			int registroInsertado = ctmt.executeUpdate();		
+			if(registroInsertado > 0) {
 				System.out.println("Todo en orden");
 			}else {
 				System.out.println("Algo salio mal");

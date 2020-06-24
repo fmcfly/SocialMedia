@@ -2,6 +2,7 @@ package mx.gob.upiicsa.controlador;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,12 +33,39 @@ public class Messages extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    /* VA a servir para la actualziación de los mensajes*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession sesion = request.getSession();
+		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		int idAmigoActual = (Integer)sesion.getAttribute("idAmigo");
 		
-		System.out.println("MENSAJE!!!!!!" + request.getParameter("message"));
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		ArrayList<MensajeBean> mensajesActuales = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");
+		int indiceMaximoActuales = mensajesActuales.size() - 1;
+		MensajeBean ultimoMensajeActual = mensajesActuales.get(indiceMaximoActuales);
+		
+		MensajesDao mensajesDao = new MensajesDao();
+		ArrayList<MensajeBean> mensajesActualizados = mensajesDao.getMensajes(idAmigoActual, usuarioLogeado.getIdUser());
+		int indiceMaximo = mensajesActualizados.size() - 1;
+		MensajeBean ultimoMensajeActualizado = mensajesActualizados.get(indiceMaximo);
+		
+		
+		// SE MANDO CMO RESPUESTA TEXTO PLANO ATRAVÉS DEL objeto response 
+				response.setContentType("text/plain");
+				response.setCharacterEncoding("UTF-8");
+		//la comparación de mensajes
+		if(ultimoMensajeActual.getIdMensaje() != ultimoMensajeActualizado.getIdMensaje()) {
+			sesion.setAttribute("mensajes",mensajesActualizados);
+			response.getWriter().write(ultimoMensajeActualizado.getTexto());
+		}else {
+			response.getWriter().write("");
+		}
+		
+		/*List <String> lista = new ArrayList<String>();
+		lista.add("elemento1");
+		lista.add("elemento2");
+		lista.add("elemento3");
+		String json = new Gson();*/
 	}
 
 	/**

@@ -47,7 +47,7 @@
 		<%for(UsuarioBean usuario:listaPerfiles) { 
 		String nombre = usuario.getNombre()+" "+ usuario.getApellido();%>
 		<div class="card mx-sm-2 mb-1" style="width: 18rem; ">
-		  <img class="card-img-top" src="img/<%=(usuario.getImage() == null ? "default.jpg" : usuario.getImage()) %>" style="height:300px;" alt="Card image cap">
+		  <img class="card-img-top" src="img/<%=((usuario.getImage() == null || usuario.getImage().equals(""))? "default.jpg" : usuario.getImage()) %>" style="height:300px;" alt="Card image cap">
 		  <div class="card-body">
 		    <h5 class="card-title"><%=nombre %></h5>
 		    <p class="card-text"><%=usuario.getCorreo() %></p>

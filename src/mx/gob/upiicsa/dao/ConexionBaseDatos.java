@@ -11,11 +11,6 @@ public class ConexionBaseDatos {
 			//Class.forName("com");
 			String connectionURL = "jdbc:mysql://fermcfly.cgkjurfvbaby.us-east-1.rds.amazonaws.com:3306/SocialMedia?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=true&useSSL=false&" +"user=admin&password=Starwars.97"; 
 			con = DriverManager.getConnection(connectionURL);
-			if(con != null){
-				System.out.println("Conexion exitosa");
-			}else{
-				System.out.println("Conexion fallida");
-			}
 		}catch(SQLException sqle){
 			System.out.println(sqle.getMessage());
 		}
