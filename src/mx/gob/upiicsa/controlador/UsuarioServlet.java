@@ -125,21 +125,43 @@ public class UsuarioServlet extends HttpServlet {
 					}else {
 						System.out.println("No es un formfield");
 						
-						if(fileItem.getSize() > 0) {
+						if(fileItem.getSize() > 0) {// cuando se envia imagen
 							usuarioNuevo.setImage(fileItem.getName());
+							
 							int statusRegistro = registroDao.crearUsuario(usuarioNuevo);
-							if(statusRegistro>0) {
+							
+							if(statusRegistro > 0) {
 								fileItem.write(new File("C:\\Users\\DELL\\Escritorio\\Proyectos_Java\\SocialMedia\\WebContent\\img\\"+fileItem.getName()));
 								request.getRequestDispatcher("/login.jsp").forward(request,response);
 							}else{
+								if(statusRegistro == -2) {
+									sesion.setAttribute("mensaje", "Correo registrado");
+								}
+								else if(statusRegistro == -1) {
+									sesion.setAttribute("mensaje", "Nombre de usuario repetido");
+								}
+								
 								request.getRequestDispatcher("/registro.jsp").forward(request,response);
 							}
 							//fileItem.write(new File("/SocialMedia/WebContent/img/"+fileItem.getName()));
 							//fileItem.write(new File("C:\\Users\\DELL\\Escritorio\\Proyectos_Java\\SocialMedia\\WebContent\\img\\"+fileItem.getName()));
-						}else {
+						}else {// cuando no se envie la imagen
 							usuarioNuevo.setImage(fileItem.getName());
+							
 							int statusRegistro = registroDao.crearUsuario(usuarioNuevo);
-							request.getRequestDispatcher("/login.jsp").forward(request,response);
+							
+							if(statusRegistro > 0) {
+								request.getRequestDispatcher("/login.jsp").forward(request,response);
+							}else{
+								if(statusRegistro == -2) {
+									sesion.setAttribute("mensaje", "Correo registrado");
+								}
+								else if(statusRegistro == -1) {
+									sesion.setAttribute("mensaje", "Nombre de usuario repetido");
+								}
+								
+								request.getRequestDispatcher("/registro.jsp").forward(request,response);
+							}
 						}
 					}
 					

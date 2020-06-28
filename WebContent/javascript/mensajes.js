@@ -16,7 +16,7 @@ setInterval(function(){
 					/*$.post("/SocialMedia/MensajesServlet?idAmigo="+idAmigo,function(){
 						window.location.href = "/SocialMedia/chat.jsp";
 					});*/
-			}, 5000);
+			}, 10000);
 
 function enviarMensaje(){
 	console.log("Enviar mensaje");

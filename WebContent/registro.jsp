@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <% HttpSession sesion = request.getSession(); 
+    	String mensaje = "";
+    	if(sesion.getAttribute("mensaje") != null){
+    		mensaje = (String) sesion.getAttribute("mensaje");
+    	}    
+    %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +64,15 @@
 		  	<button class="boton" color="violet" onclick="validar()">Registrar</button>
 		  </div>
 		</form>
-	   
+	   <div class="mx-auto" style="width: 200px;">
+   			 	    <div class="input-group-prepend">
+				       <%if(mensaje != ""){%>
+						<div class="alert alert-danger" role="alert">
+			  	          <%=mensaje %>
+			 			</div>
+			  	 	</div>
+				  </div>
+						  <%}%>
 	</div>	
 </body> 
 </html>

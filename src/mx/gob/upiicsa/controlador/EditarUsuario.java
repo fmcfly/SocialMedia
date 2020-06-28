@@ -49,25 +49,29 @@ public class EditarUsuario extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("POST EDITAR");
 		HttpSession sesion = request.getSession();
+		if(sesion != null) {
+			UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+			
+			usuarioLogeado.setFrase(request.getParameter("estadoPerfil"));
+			usuarioLogeado.setNombreUsuario(request.getParameter("nombreUsuario"));
+			usuarioLogeado.setBirhtdate(request.getParameter("cumple"));
+			usuarioLogeado.setPais(request.getParameter("pais"));
+			usuarioLogeado.setSexo(request.getParameter("sexo"));
+			
+			PerfilDao perfil = new PerfilDao();
+			
+			usuarioLogeado = perfil.updateUser(usuarioLogeado);
+			
+			sesion.setAttribute("usuario",usuarioLogeado);
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("1");
+		}else {
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("-1");
+		}
 		
-		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
-		
-		usuarioLogeado.setFrase(request.getParameter("estadoPerfil"));
-		usuarioLogeado.setNombreUsuario(request.getParameter("nombreUsuario"));
-		usuarioLogeado.setBirhtdate(request.getParameter("cumple"));
-		usuarioLogeado.setPais(request.getParameter("pais"));
-		usuarioLogeado.setSexo(request.getParameter("sexo"));
-		
-		
-		
-		//request.getParameter("name");
-		
-		
-		PerfilDao perfil = new PerfilDao();
-		
-		sesion.setAttribute("usuario",perfil.updateUser(usuarioLogeado));
-		request.getRequestDispatcher("usuario.jsp").forward(request, response);
-		//doGet(request, response);
 	}
 
 }
