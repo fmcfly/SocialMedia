@@ -73,7 +73,7 @@
 					<p class="dato" id="frase"><%=((userLogin.getFrase()==null) ? "No hay datos":userLogin.getFrase())%></p>
 				</div>
 				<div class="col-md-4">
-					<i class="far fa-envelope"></i>
+					<a href="mensajes.jsp"><i class="far fa-envelope"></i></a>
 					
 				</div>
 			</div>
@@ -157,6 +157,10 @@
 	}
 	
 	function guardar(){
+		Swal.fire({
+			title:'Guardando los cambios'
+		});
+		Swal.showLoading();
 		let valorestado = document.getElementById("estado").value;
 		console.log(valorestado);
 		
@@ -189,10 +193,6 @@
 			}
 		}
 		console.log(valorSexo);
-		/*let formEditar = document.getElementById("infoUser");
-		formEditar.action = "/SocialMedia/EditarUsuario?sexo="+valorSexo;
-		formEditar.method="POST";
-		formEditar.submit();*/
 		 $.ajax({
 	        url:"/SocialMedia/EditarUsuario",
 	        method:"POST", //First change type to method here
@@ -210,10 +210,10 @@
 	        		window.location.href ="/SocialMedia/login.jsp";
 	        	}
 	        	location.reload();
-	        	console.log(response);
 	        	
 	       },
 	       error:function(){
+	    	   alert("Ocurrio un error por favor intentalo mas tarde");
 	    	   console.log("error");
 	       }
 
@@ -236,7 +236,8 @@
 	}
 </script>
 <script src="javascript/autenticacion.js"></script>
-<script src="https://kit.fontawesome.com/af8d928238.js" crossorigin="anonymous"></script>	
+<script src="https://kit.fontawesome.com/af8d928238.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>	
 <% } //ESTA LLAVE CIERRA EL IF QUE VALIDA SI HAY UN USUARIO EN LA SESIÓN
 else{%>
 <script>

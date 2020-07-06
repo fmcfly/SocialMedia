@@ -6,14 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import mx.gob.upiicsa.modelo.MensajeBean;
+import mx.gob.upiicsa.modelo.UsuarioChat;
 
 public class MensajesDao {
 	private Connection con;
 	private Statement st;
 	private ResultSet rs;
-	
+	private CallableStatement ctmt;
 	public MensajesDao(){}
 	
 	public ArrayList<MensajeBean> getMensajes(int idAmigo, int idLogin) {
@@ -42,6 +44,32 @@ public class MensajesDao {
 
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
+		}
+		return mensajesEncontrados;
+	}
+	
+	public List<MensajeBean> obtenerMensajes(int idChat){
+		List<MensajeBean> mensajesEncontrados = new ArrayList<>();
+		
+		String procMensajes = "{call obtenerMensajes(?)}";
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		try {
+			ctmt = con.prepareCall(procMensajes);
+			ctmt.setInt(1, idChat);
+			rs = ctmt.executeQuery();
+			while(rs.next()) {
+				MensajeBean msjBean = new MensajeBean();
+				msjBean.setIdMensaje(rs.getInt("id_message"));
+				msjBean.setIdChat(rs.getInt("id_chat"));
+				msjBean.setIdUsuario(rs.getInt("id_usuario"));
+				msjBean.setTexto(rs.getString("texto"));
+				msjBean.setFecha(rs.getDate("fecha"));
+				mensajesEncontrados.add(msjBean);
+			}
+			con.close();
+		}catch(SQLException sqle) {
+			System.out.println(sqle.getMessage());
 		}
 		return mensajesEncontrados;
 	}
@@ -105,4 +133,33 @@ public class MensajesDao {
 			System.out.println("Error de SQLException"+ sqle.getMessage());
 		}
 	}
+	
+	public List<UsuarioChat> infoChat(int idLogueado)
+	{
+		List<UsuarioChat> usuariosChat = new ArrayList<>();
+		
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		String infoChatUsuario = "{call info_chat_usuario (?)}";
+		try {
+			ctmt = con.prepareCall(infoChatUsuario);
+			ctmt.setInt(1, idLogueado);
+			rs = ctmt.executeQuery();
+			while(rs.next()) {
+				
+				UsuarioChat userChat = new UsuarioChat();
+				userChat.setIdChat(rs.getInt("id_chat"));
+				userChat.setNombre(rs.getString("nombre"));
+				userChat.setImage(rs.getString("image"));
+				
+				usuariosChat.add(userChat);
+			}
+			con.close();
+		}catch(SQLException sqle){
+			System.out.println(sqle.getMessage());
+		}
+		
+		return usuariosChat;
+	}
+	
 }

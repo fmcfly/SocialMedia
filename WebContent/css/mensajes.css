@@ -1,0 +1,56 @@
+.tablaAmigos{
+	height: 700px;
+	overflow-y:auto;
+	
+}
+
+.chat{
+	height: 700px;
+	
+}
+
+.header{
+	height:8%;
+}
+
+.mensajes{
+	height: 75%;
+	overflow-y:auto;
+}
+
+.text{
+	height:20%;
+}
+
+.far{
+	font-size:50px;
+}
+
+.botonEnviarMensaje{
+	padding-top:55px;
+}
+
+.imagen-tabla{
+	width:65px;
+	height:65px ;
+}
+
+tr:hover{
+	background-color:#DDD7DC;
+	
+}
+
+.mensajeUsuario{
+	padding-left:45%;
+}
+
+.fas{
+	font-size:25px;
+}
+
+.spinner-no{
+	visibility:hidden;
+}
+.spinner-si{
+	visibility:visible;
+}

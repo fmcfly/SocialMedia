@@ -49,8 +49,8 @@ public class EditarUsuario extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("POST EDITAR");
 		HttpSession sesion = request.getSession();
-		if(sesion != null) {
-			UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		if(usuarioLogeado != null) {
 			
 			usuarioLogeado.setFrase(request.getParameter("estadoPerfil"));
 			usuarioLogeado.setNombreUsuario(request.getParameter("nombreUsuario"));
