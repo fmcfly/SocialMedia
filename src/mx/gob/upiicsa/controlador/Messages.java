@@ -72,39 +72,30 @@ public class Messages extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
-		String mensaje = request.getParameter("message");
 		HttpSession sesion  = request.getSession();
-		System.out.println("ENTRO A POST MESSAGE");
-		MensajeBean msjNuevo = new MensajeBean();
 		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		
+		String mensaje = request.getParameter("message");
+		int idChat = Integer.parseInt(request.getParameter("idChat"));
+		
+		
+		MensajeBean msjNuevo = new MensajeBean();
+		
 		MensajesDao mensajesDao = new MensajesDao();
 		//Este es el ID del usuario Logeado
 		msjNuevo.setIdUsuario(usuarioLogeado.getIdUser());
 		msjNuevo.setTexto(mensaje);
-		
-		int idAmigoActual = (Integer)sesion.getAttribute("idAmigo");
-		
-		if(sesion.getAttribute("idChat") != null) { // SI EL IDCHAT es nul quiere decir que aún no se inicia una conversación
-			int idChat = (Integer) sesion.getAttribute("idChat");
-			msjNuevo.setIdChat(idChat);
-			//guardamos el mensjae
-			mensajesDao.guardarMensaje(msjNuevo);
-		}else { //Si esta vació el idchat entonces aun no hay una conversación 
-			mensajesDao.crearChat(msjNuevo,idAmigoActual);
-		}
-		//Recargar los mensajes llamando de nuevo a MesnajesServlet
-		
-		//actualizamos el mensaje esto en caso de que recarguen la pagina chat.jsp
-		ArrayList<MensajeBean> mensajesEncontrados = mensajesDao.getMensajes(idAmigoActual, usuarioLogeado.getIdUser());
-		sesion.setAttribute("mensajes", mensajesEncontrados);
-		//request.getRequestDispatcher("/chat.jsp").forward(request, response);
-		 String text = "Se envió el mensaje";
+		msjNuevo.setIdChat(idChat);
 
-	    response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-	    response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-	    response.getWriter().write(text); 
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		
+		if(idChat != 0) { // Ya hay una conversación
+			response.getWriter().write(mensajesDao.guardarMensaje(msjNuevo));
+		}else { //Si es igual a cero entonces creas el chat  
+			//mensajesDao.crearChat(msjNuevo,idAmigoActual);
+		}
 	}
 
 }

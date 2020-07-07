@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import mx.gob.upiicsa.modelo.MensajeBean;
 import mx.gob.upiicsa.modelo.UsuarioChat;
 
@@ -74,7 +76,8 @@ public class MensajesDao {
 		return mensajesEncontrados;
 	}
 	
-	public void guardarMensaje(MensajeBean msjNuevo) {
+	public String guardarMensaje(MensajeBean msjNuevo) {
+		Gson gson = new Gson();
 		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
 		con = conexionBD.getConexion();
 		
@@ -86,16 +89,20 @@ public class MensajesDao {
 			ctmt.setInt (2,msjNuevo.getIdUsuario());
 			ctmt.setString(3, msjNuevo.getTexto());
 			
-			int registroInsertado = ctmt.executeUpdate();		
-			if(registroInsertado > 0) {
-				System.out.println("Todo en orden");
+			rs = ctmt.executeQuery();		
+			if(rs.next()) {
+				msjNuevo.setIdMensaje(rs.getInt("id_message"));
+				msjNuevo.setFecha(rs.getDate("fecha"));
+				msjNuevo.setTexto(rs.getString("texto"));
 			}else {
-				System.out.println("Algo salio mal");
+				msjNuevo.setIdMensaje(0);
 			}
 			con.close();
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}	
+		
+		return new String(gson.toJson(msjNuevo));
 	}
 	
 	public void crearChat(MensajeBean msjNuevo,int idAmigo) {

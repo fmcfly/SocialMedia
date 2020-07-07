@@ -66,11 +66,10 @@ public class ChatServlet extends HttpServlet {
 		List<MensajeBean> mensajesEncontrados = mensaje.obtenerMensajes(idChat);
 		
 		Gson gson = new Gson();//ESTA CLASE NOS VA AYUDAR A CONVERTI R NOTACION JSON
-		String jsonMensajes = gson.toJson(mensajesEncontrados);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(jsonMensajes);
+		response.getWriter().write(gson.toJson(mensajesEncontrados));
 	}
 
 	/**

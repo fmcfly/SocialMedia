@@ -53,14 +53,14 @@
 				  </tbody>
 				</table>
 			</div>
-			<div class="col-md-9 chat">
+			<div class="col-md-7 chat">
 				<div class="form-inline">
 					<h1 class="header mx-sm-3" id="nameUserChat"></h1>
 					<img id="imageUser" class="imagen-tabla rounded-circle mx-sm-3">
 					<i class="fas fa-spinner fa-spin spinner-no" id="spinner"></i>
 				</div>
 				
-				<div class="mensajes border border-danger" id="mensajes">
+				<div class="mensajes" id="mensajes">
 					
 				</div>
 				
@@ -68,7 +68,7 @@
 				
 	   				<textarea class="form-control mx-2" id="message" rows="4" name="mensaje" style="width: 85%;" placeholder="Escribe tu mensaje"></textarea>
 	   				<div class="botonEnviarMensaje">
-	   					<button class="btn-primary" onclick="envioMensaje()" style=""><i class="far fa-paper-plane"></i></button>
+	   					<button class="btn-primary" onclick="sendMessage()" style=""><i class="far fa-paper-plane"></i></button>
 	   				</div>
 	   				
 	   				
