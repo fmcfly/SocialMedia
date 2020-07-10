@@ -43,31 +43,32 @@ public class UsuarioServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
 		HttpSession sesion = request.getSession();
-		UsuarioBean usuarioLogueado = (UsuarioBean) sesion.getAttribute("usuario");
-		if(usuarioLogueado != null) {
-			int idAmigo = Integer.parseInt(request.getParameter("idAmigo"));
+		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		if(usuarioLogeado != null) {
 			
-			AmigosDao amigoDao = new AmigosDao();
+			System.out.println(request.getParameter("estadoPerfil"));
+			usuarioLogeado.setFrase(request.getParameter("estadoPerfil"));
+			usuarioLogeado.setNombreUsuario(request.getParameter("nombreUsuario"));
+			usuarioLogeado.setBirhtdate(request.getParameter("cumple"));
+			usuarioLogeado.setPais(request.getParameter("pais"));
+			usuarioLogeado.setSexo(request.getParameter("sexo"));
+			System.out.println(usuarioLogeado.toString());
 			PerfilDao perfil = new PerfilDao();
-			int registrosAfectados = amigoDao.eliminarAmigo(usuarioLogueado.getIdUser(), idAmigo);
 			
-			if(registrosAfectados > 0) {
-				ArrayList<UsuarioBean> listaAmigos = amigoDao.encontrarAmigos(usuarioLogueado.getIdUser());
-				usuarioLogueado = perfil.actualizarInfoLogueado(usuarioLogueado.getIdUser());
-				//sesion.removeAttribute("mensaje");
-				sesion.setAttribute("usuario", usuarioLogueado);
-				sesion.setAttribute("amigos", listaAmigos);
-			}
+			usuarioLogeado = perfil.updateUser(usuarioLogeado);
+			
+			sesion.setAttribute("usuario",usuarioLogeado);
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("1");
 		}else {
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("-1");
 		}
-		
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

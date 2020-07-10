@@ -20,30 +20,30 @@ public class MensajesDao {
 	private CallableStatement ctmt;
 	public MensajesDao(){}
 	
-	public ArrayList<MensajeBean> getMensajes(int idAmigo, int idLogin) {
+	public List<MensajeBean> getMesagesByProfile(int idPerfil, int idLogin) {
 		
-		ArrayList<MensajeBean> mensajesEncontrados = new ArrayList<MensajeBean>(); 
+		List<MensajeBean> mensajesEncontrados = new ArrayList<MensajeBean>(); 
 		
 		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
 		con = conexionBD.getConexion();
 		
-		String queryMensajes ="select id_message, id_chat, id_usuario, texto, fecha  from Mensajes\r\n" + 
-				"	where id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idAmigo+" and\r\n" + 
-				"	id_chat in (select id_chat from Rel_Chat_Usuarios where id_usuario = "+idLogin+")) order by fecha asc";
+		String obtenerMensajesByPerfil = "{call obtener_mensajes_by_perfil(?,?)}";
 		try {
-			st = con.createStatement();
-			rs = st.executeQuery(queryMensajes);
-			while(rs.next()){
-				MensajeBean msjBean = new MensajeBean();
-				msjBean.setIdMensaje(rs.getInt("id_message"));
-				msjBean.setIdChat(rs.getInt("id_chat"));
-				msjBean.setIdUsuario(rs.getInt("id_usuario"));
-				msjBean.setTexto(rs.getString("texto"));
-				msjBean.setFecha(rs.getDate("fecha"));
-				mensajesEncontrados.add(msjBean);
+			
+			ctmt = con.prepareCall(obtenerMensajesByPerfil);
+			ctmt.setInt(1, idPerfil);
+			ctmt.setInt(2, idLogin);
+			rs = ctmt.executeQuery();
+			while(rs.next()) {
+				MensajeBean mensaje = new MensajeBean();
+				mensaje.setIdMensaje(rs.getInt("id_message"));
+				mensaje.setIdChat(rs.getInt("id_chat"));
+				mensaje.setIdUsuario(rs.getInt("id_usuario"));
+				mensaje.setTexto(rs.getString("texto"));
+				mensaje.setFecha(rs.getDate("fecha"));
+				mensajesEncontrados.add(mensaje);
 			}
 			con.close();
-
 		}catch(SQLException sqle) {
 			System.out.println("Error de SqlException" + sqle.getMessage());
 		}
@@ -105,40 +105,26 @@ public class MensajesDao {
 		return new String(gson.toJson(msjNuevo));
 	}
 	
-	public void crearChat(MensajeBean msjNuevo,int idAmigo) {
-		String queryCrearChat =  "select MAX(id_chat) as ultimochat from chat";
+	public String crearChat(MensajeBean msjNuevo,int idPerfil) {
+		String procCrearChat = "{ call crear_chat(?,?)}";
 		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
 		con = conexionBD.getConexion();
+		String mensajeEnviado = "";
 		try {
-			st= con.createStatement();
-			
-			rs= st.executeQuery(queryCrearChat);
-			rs.next();
-			System.out.println(rs.getInt("ultimochat"));
-			int chatMax = rs.getInt("ultimochat");
-			chatMax++;
-			// CREAMOS EL ICHAT 
-			String queryInsertar = "insert into chat values(" + chatMax +",curdate())";
-			int registroInsertar = st.executeUpdate(queryInsertar);
-			if(registroInsertar >0) {// SI SE CREO CORRECTAEMNTE CON EL ID PROSEGUIMOS A CREAR LA RELACIÓN DE LOS UAURIOS 
-				System.out.println("Se creo chat");
-				String queryRelacionLogeado = "insert into Rel_Chat_Usuarios values("+chatMax+","+ msjNuevo.getIdUsuario()+")";
-				String queryRelacionAmigo = "insert into Rel_Chat_Usuarios values("+chatMax+","+idAmigo+")";
-				
-				int insercionLogeado = st.executeUpdate(queryRelacionLogeado);
-				int insercionAmigo = st.executeUpdate(queryRelacionAmigo);
-				if(insercionAmigo > 0 && insercionLogeado > 0) {
-					msjNuevo.setIdChat(chatMax);
-					guardarMensaje(msjNuevo);
-				}
-			}else {
-				System.out.println("Algo fallo");
+			ctmt = con.prepareCall(procCrearChat);
+			ctmt.setInt(1, msjNuevo.getIdUsuario());
+			ctmt.setInt(2, idPerfil);
+			rs = ctmt.executeQuery();
+			if(rs.next()) {
+				msjNuevo.setIdChat(rs.getInt(1));
+				mensajeEnviado = this.guardarMensaje(msjNuevo);
 			}
-			
 			con.close();
 		}catch(SQLException sqle) {
 			System.out.println("Error de SQLException"+ sqle.getMessage());
 		}
+		
+		return mensajeEnviado;
 	}
 	
 	public List<UsuarioChat> infoChat(int idLogueado)
@@ -169,4 +155,40 @@ public class MensajesDao {
 		return usuariosChat;
 	}
 	
+	public int mensajesNoVistos(int idLogueado){
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		String contarMensajes = "{call contar_mensajes(?)}";
+		int cantidad = 0;
+		try {
+			ctmt = con.prepareCall(contarMensajes);
+			ctmt.setInt(1,idLogueado);// mandando el valor al proc
+			rs = ctmt.executeQuery();
+			
+			if(rs.next()) {
+				cantidad = rs.getInt(1);
+			}
+			con.close();
+		}catch(SQLException sqle){
+			System.out.println(sqle.getMessage());
+		}
+		return cantidad;
+	}
+	public int mensajesVistos ( int idChatSeleccionado, int usuarioLogueado) {
+		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
+		con = conexionBD.getConexion();
+		int  listo = 0;
+		String mensajeVisto = "{call mensaje_visto(?,?)}";
+		try {
+			ctmt = con.prepareCall(mensajeVisto);
+			ctmt.setInt(1, idChatSeleccionado);
+			ctmt.setInt(2, usuarioLogueado);
+
+			listo = ctmt.executeUpdate();
+			
+		}catch(SQLException sqle){
+			System.out.println(sqle.getMessage());
+		}
+		return listo;
+	}
 }

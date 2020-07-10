@@ -33,51 +33,32 @@ public class Messages extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-    /* VA a servir para la actualziación de los mensajes*/
+    /* VA a servir para los mensajes que no ha visto*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession sesion = request.getSession();
-		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
-		int idAmigoActual = (Integer)sesion.getAttribute("idAmigo");
-		
-		ArrayList<MensajeBean> mensajesActuales = (ArrayList<MensajeBean>) sesion.getAttribute("mensajes");
-		int indiceMaximoActuales = mensajesActuales.size() - 1;
-		MensajeBean ultimoMensajeActual = mensajesActuales.get(indiceMaximoActuales);
-		
-		MensajesDao mensajesDao = new MensajesDao();
-		ArrayList<MensajeBean> mensajesActualizados = mensajesDao.getMensajes(idAmigoActual, usuarioLogeado.getIdUser());
-		int indiceMaximo = mensajesActualizados.size() - 1;
-		MensajeBean ultimoMensajeActualizado = mensajesActualizados.get(indiceMaximo);
-		
-		
-		// SE MANDO CMO RESPUESTA TEXTO PLANO ATRAVÉS DEL objeto response 
-				response.setContentType("text/plain");
-				response.setCharacterEncoding("UTF-8");
-		//la comparación de mensajes
-		if(ultimoMensajeActual.getIdMensaje() != ultimoMensajeActualizado.getIdMensaje()) {
-			sesion.setAttribute("mensajes",mensajesActualizados);
-			response.getWriter().write(ultimoMensajeActualizado.getTexto());
-		}else {
-			response.getWriter().write("");
-		}
-		
-		/*List <String> lista = new ArrayList<String>();
-		lista.add("elemento1");
-		lista.add("elemento2");
-		lista.add("elemento3");
-		String json = new Gson();*/
+		UsuarioBean usuarioLoqueado = (UsuarioBean) sesion.getAttribute("usuario");
+		MensajesDao mensajes = new MensajesDao();
+		int cantidadMensajes = mensajes.mensajesNoVistos(usuarioLoqueado.getIdUser());
+		 
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("UTF-8");
+		//wirte recibe una cadena de caracteres no puedes enviar un int 
+		//write(escribe la respuesta
+		response.getWriter().write(Integer.toString(cantidadMensajes));
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//GUARDA MENSAJE
+		
 		HttpSession sesion  = request.getSession();
 		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		UsuarioBean perfilUsuario = (UsuarioBean) sesion.getAttribute("perfilUsuario");
 		
 		String mensaje = request.getParameter("message");
 		int idChat = Integer.parseInt(request.getParameter("idChat"));
-		
 		
 		MensajeBean msjNuevo = new MensajeBean();
 		
@@ -94,7 +75,9 @@ public class Messages extends HttpServlet {
 		if(idChat != 0) { // Ya hay una conversación
 			response.getWriter().write(mensajesDao.guardarMensaje(msjNuevo));
 		}else { //Si es igual a cero entonces creas el chat  
-			//mensajesDao.crearChat(msjNuevo,idAmigoActual);
+			response.getWriter().write(
+					mensajesDao.crearChat(msjNuevo,perfilUsuario.getIdUser())
+			);
 		}
 	}
 

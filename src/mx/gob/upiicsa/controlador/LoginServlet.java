@@ -18,7 +18,7 @@ import mx.gob.upiicsa.modelo.UsuarioBean;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/Login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

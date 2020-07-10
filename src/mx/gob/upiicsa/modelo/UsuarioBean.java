@@ -18,6 +18,16 @@ public class UsuarioBean {
 	private String pais;
 	private int numeroAmigos;
 	
+	
+	
+	@Override
+	public String toString() {
+		return "UsuarioBean [idUser=" + idUser + ", nombre=" + nombre + ", apellido=" + apellido + ", correo=" + correo
+				+ ", password=" + password + ", telefono=" + telefono + ", image=" + image + ", amigo=" + amigo
+				+ ", frase=" + frase + ", nombreUsuario=" + nombreUsuario + ", birhtdate=" + birhtdate + ", sexo="
+				+ sexo + ", pais=" + pais + ", numeroAmigos=" + numeroAmigos + "]";
+	}
+
 	public int getNumeroAmigos() {
 		return numeroAmigos;
 	}

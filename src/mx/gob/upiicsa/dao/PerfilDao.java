@@ -43,7 +43,7 @@ public class PerfilDao {
 		return usuario;
 	}
 		
-	public UsuarioBean actualizarInfoLogueado(int idUsuarioLogueado) {
+	public UsuarioBean getInfoUserById(int idUsuario) {
 		UsuarioBean user = new UsuarioBean();
 		String procedure = "{ call update_login(?)}";
 		
@@ -52,7 +52,7 @@ public class PerfilDao {
 		
 		try {
 			CallableStatement cllst = con.prepareCall(procedure);
-			cllst.setInt(1,idUsuarioLogueado);
+			cllst.setInt(1,idUsuario);
 			
 			ResultSet rs = cllst.executeQuery();
 			if(rs.next()) {

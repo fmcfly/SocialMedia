@@ -31,6 +31,9 @@
 			        <a class="nav-link" href="usuario.jsp">Perfil<span class="sr-only">(current)</span></a>
 			      </li>
 			      <li class="nav-item">
+			        <a class="nav-link" href="mensajes.jsp">Mensajes</a>
+			      </li>
+			      <li class="nav-item">
 			        <a class="nav-link" onclick="cerrarSesion()">Cerrar Sesión</a>
 			      </li>
 			    </ul>
@@ -49,6 +52,7 @@
 					</div>
 					 <img src="img/<%=((userLogin.getImage() == null || userLogin.getImage().equals("")) ? "default.jpg" : userLogin.getImage())%>"
 					 alt="Foto de perfil" class="rounded-circle" style="width:180px">
+					
 					<h5 id="nombreUsuario"><%=userLogin.getNombreUsuario() %></h5>
 					<p id="pais"class="informacion">Pais : <%=((userLogin.getPais()==null) ? "No hay datos":userLogin.getPais())%></p>
 					<div class="row informacion">
@@ -75,35 +79,11 @@
 				<div class="col-md-4">
 					<a href="mensajes.jsp"><i class="far fa-envelope"></i></a>
 					
+					<h5 class="rounded-circle numero" id="noVistos"></h5>
+					
+					
 				</div>
 			</div>
-		</div>
-		<div>
-			<div class="tabla">
-			 		<table class="table fondoMorado">
-					  <thead>
-					    <tr>
-					      <th scope="col"></th>
-					      <th scope="col">Nombre</th>
-					      <th scope="col">Apellido</th>
-					      
-					    </tr>
-					  </thead>
-					  <tbody>
-					  <%
-					  for(UsuarioBean amigoEncontrado:tablaAmigos){
-					  %>
-					    <tr id="<%=amigoEncontrado.getIdUser()%>">
-					      <td> <img src="img/<%=((amigoEncontrado.getImage()== null || amigoEncontrado.getImage().equals(""))? "default.jpg" : amigoEncontrado.getImage())%>"class="rounded-circle imagen-tabla">  </td>
-					      <td><%=amigoEncontrado.getNombre() %></td>
-					      <td><%=amigoEncontrado.getApellido() %></td>
-					      <td><button class="alert alert-primary" onclick="enviarMensaje(<%=amigoEncontrado.getIdUser()%>)">Mensaje</button></td>
-					      <td><button class="alert alert-danger" onclick="eliminarAmigo(<%=amigoEncontrado.getIdUser()%>)">Eliminar</button></td>
-					    </tr>
-					    <%} %>
-					  </tbody>
-					</table>
-				</div>
 		</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -116,6 +96,15 @@
 			pais:"<%=((userLogin.getPais()==null) ? "":userLogin.getPais())%>"
 	};
 	console.log(infoUsuario);
+	
+
+	setInterval(() => {
+		$.get ("/SocialMedia/Messages", function(cantidad){
+			console.log(cantidad);
+			$("#noVistos").text(cantidad);
+		}	)
+	}, 1000);
+	
 	
 	function cambiando(){
 		//obteniendo elementos por jQuery
@@ -161,6 +150,7 @@
 			title:'Guardando los cambios'
 		});
 		Swal.showLoading();
+		
 		let valorestado = document.getElementById("estado").value;
 		console.log(valorestado);
 		
@@ -168,10 +158,12 @@
 		console.log(valorNombreUsuario);
 		if(valorNombreUsuario == ""){
 			alert("El nombre de usuario no puede estar vacio");
+			Swal.close();
 			return;
 		}else{
 			if(valorNombreUsuario.length < 6){
 				alert("El username debe tener al menos 6 caracteres");	
+				Swal.close();
 				return;
 			}
 		}
@@ -192,10 +184,10 @@
 				valorSexo = radio.value;
 			}
 		}
-		console.log(valorSexo);
+		console.log(valorestado);
 		 $.ajax({
-	        url:"/SocialMedia/EditarUsuario",
-	        method:"POST", //First change type to method here
+	        url:"/SocialMedia/UsuarioServlet",
+	        method:"GET", //First change type to method here
 
 	        data:{
 	        	//nombre Propiedad     valor
@@ -234,6 +226,7 @@
 		});
 		
 	}
+	
 </script>
 <script src="javascript/autenticacion.js"></script>
 <script src="https://kit.fontawesome.com/af8d928238.js" crossorigin="anonymous"></script>

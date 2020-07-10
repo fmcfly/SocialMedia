@@ -33,14 +33,14 @@ public class PerfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// PARA CUANDO SE REALIZA LA BUSQUEDA
+		// PARA CUANDO SE REALIZA LA BUSQUEDA DESDE EL NAVBAR
 		HttpSession sesion = request.getSession();
 		UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
 		if(userLogin != null) {
 			PerfilDao perfilDao = new PerfilDao(); 
 			ArrayList<UsuarioBean> perfilesEncontrados = perfilDao.encontrarlPerfil(request.getParameter("nombre"),userLogin.getIdUser());
 			sesion.setAttribute("perfiles", perfilesEncontrados);
-			request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+			request.getRequestDispatcher("/busqueda.jsp").forward(request,response);
 		}
 		else {
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -51,33 +51,58 @@ public class PerfilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+		//AGREGA AMIGOS
 		HttpSession sesion = request.getSession();
-		//OBTENEMOS EL USUARIO DE LA SESIÓN
 		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
-		//OBTENEMOS EL ID QUE QUIERE AGREGAR EL USUAIO:
-		//Convertimos el ripo de dato String idUsuario a entero con la clase envoltorio Integer
-		int idAmigo = Integer.parseInt(request.getParameter("idUsuario"));
+		UsuarioBean perfilUsuario = (UsuarioBean) sesion.getAttribute("perfilUsuario");
 		
 		AmigosDao amigosDao = new AmigosDao();
-		PerfilDao perfilDao = new PerfilDao(); 
-		int respuesta = amigosDao.agregarAmigo(usuarioLogeado.getIdUser(), idAmigo);
-		System.out.println(respuesta);
+		PerfilDao perfilDao = new PerfilDao();
+		
+		int respuesta = amigosDao.agregarAmigo(usuarioLogeado.getIdUser(), perfilUsuario.getIdUser());
 		if(respuesta > 0) {
-			PerfilDao perfil = new PerfilDao();
-			ArrayList<UsuarioBean> perfilesEncontrados = perfilDao.encontrarlPerfil(request.getParameter("nombre"),usuarioLogeado.getIdUser());
-			usuarioLogeado = perfil.actualizarInfoLogueado(usuarioLogeado.getIdUser());
-			sesion.setAttribute("perfiles", perfilesEncontrados);
-			sesion.setAttribute("usuario", usuarioLogeado);
-			System.out.println("!!!!!!!!!!!!!!!!!ENTRO");
-			ArrayList<UsuarioBean> listaAmigos = amigosDao.encontrarAmigos(usuarioLogeado.getIdUser());
-			sesion.setAttribute("amigos", listaAmigos);
+			perfilUsuario = perfilDao.getInfoUserById(perfilUsuario.getIdUser());
+			perfilUsuario.setAmigo(1);
+			usuarioLogeado = perfilDao.getInfoUserById(usuarioLogeado.getIdUser());
 			
-			//request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+			sesion.setAttribute("usuario", usuarioLogeado);
+			sesion.setAttribute("perfilUsuario", perfilUsuario);
+			response.setContentType("text/plain");
+			response.getWriter().write("1");
 		}else {
-			//request.getRequestDispatcher("/perfil.jsp").forward(request,response);
+			perfilUsuario.setAmigo(0);
+			response.setContentType("text/plain");
+			response.getWriter().write("0");
 		}
 	}
-
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Elimina AMIGOS
+		
+		HttpSession sesion = request.getSession();
+		UsuarioBean usuarioLogueado = (UsuarioBean) sesion.getAttribute("usuario");
+		UsuarioBean perfilUsuario = (UsuarioBean) sesion.getAttribute("perfilUsuario");
+		
+		if(usuarioLogueado != null) {
+			
+			AmigosDao amigoDao = new AmigosDao();
+			PerfilDao perfilDao = new PerfilDao();
+			int registrosAfectados = amigoDao.eliminarAmigo(usuarioLogueado.getIdUser(), perfilUsuario.getIdUser());
+			
+			if(registrosAfectados > 0) {
+				perfilUsuario = perfilDao.getInfoUserById(perfilUsuario.getIdUser());
+				perfilUsuario.setAmigo(0);
+				usuarioLogueado = perfilDao.getInfoUserById(usuarioLogueado.getIdUser());
+				
+				sesion.setAttribute("usuario", usuarioLogueado);
+				sesion.setAttribute("perfilUsuario", perfilUsuario);
+				response.setContentType("text/plain");
+				response.getWriter().write("1");
+			}
+		}else {
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
+		
+	}
+	
 }

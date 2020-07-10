@@ -41,6 +41,8 @@ public class ChatServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		//LISTA DE LOS CHATS
 		HttpSession sesion = request.getSession();
 		UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
 		
@@ -51,8 +53,6 @@ public class ChatServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(jsonUsuariosChat);
-		
-
 	}
 
 	/**
@@ -60,16 +60,18 @@ public class ChatServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//REGRESE LOS MENSAJES
+		//REGRESE LOS MENSAJES A PARTIR DEL IDCHAT
 		int idChat = Integer.parseInt(request.getParameter("idChat"));
-		System.out.println(idChat);
 		List<MensajeBean> mensajesEncontrados = mensaje.obtenerMensajes(idChat);
-		
 		Gson gson = new Gson();//ESTA CLASE NOS VA AYUDAR A CONVERTI R NOTACION JSON
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(gson.toJson(mensajesEncontrados));
+		
+		HttpSession sesion = request.getSession();
+		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
+		mensaje.mensajesVistos(idChat, usuarioLogeado.getIdUser());
 	}
 
 	/**

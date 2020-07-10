@@ -4,7 +4,8 @@
     pageEncoding="ISO-8859-1"%>
     
     <%HttpSession sesion =request.getSession();
-    	UsuarioBean userLogin = (UsuarioBean) session.getAttribute("usuario"); %>
+    	UsuarioBean userLogin = (UsuarioBean) session.getAttribute("usuario");
+    	UsuarioBean perfilUsuario = (UsuarioBean) session.getAttribute("perfilUsuario");%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +15,16 @@
 	<link href="css/mensajes.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
-<%if(userLogin != null){ %>
-<body onload="setUserLogin(<%=userLogin.getIdUser()%>)">
+<%if(userLogin != null){
+	if(perfilUsuario != null){%>
+	<script>
+		let perfilUsuario = {
+				nombre:'<%=perfilUsuario.getNombre() %> <%=perfilUsuario.getApellido() %>',
+				image:'<%= ((perfilUsuario.getImage()==null || perfilUsuario.getImage().equals(""))  ? "default.jpg":perfilUsuario.getImage())%>'
+		};
+	</script>
+	<%} %>
+<body onload="funInicio(<%=userLogin.getIdUser()%>)">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 	  <a class="navbar-brand" href="login.jsp">SocialMedia</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +33,11 @@
 	
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	   	  <li class="nav-item active">
+	   	  <li class="nav-item">
 	        <a class="nav-link" href="usuario.jsp">Perfil<span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" href="mensajes.jsp">Mensajes</a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" onclick="cerrarSesion()">Cerrar Sesión</a>

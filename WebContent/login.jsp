@@ -14,10 +14,6 @@
 		<title>CHAT</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/estilos.css">
-		<script>
-		
-			
-		</script>
 	</head>
 	<body>
 		<div class="form">
@@ -25,7 +21,7 @@
 				<hr width="85%" color="violet">
 				<h2>Inicia sesión</h2>
 		</div>
-			<form class="container" method="POST" action="LoginServlet">
+			<form class="container" method="POST" action="Login">
 				  <div class="form-group">
 				    <label for="exampleInputEmail1">Correo:</label>
 				    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="correo">
