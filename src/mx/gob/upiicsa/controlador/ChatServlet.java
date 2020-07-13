@@ -61,17 +61,17 @@ public class ChatServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//REGRESE LOS MENSAJES A PARTIR DEL IDCHAT
+		HttpSession sesion = request.getSession();
+		UsuarioBean userLogin = (UsuarioBean) sesion.getAttribute("usuario");
 		int idChat = Integer.parseInt(request.getParameter("idChat"));
 		List<MensajeBean> mensajesEncontrados = mensaje.obtenerMensajes(idChat);
 		Gson gson = new Gson();//ESTA CLASE NOS VA AYUDAR A CONVERTI R NOTACION JSON
 		
+		mensaje.mensajesVistos(idChat, userLogin.getIdUser());
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(gson.toJson(mensajesEncontrados));
-		
-		HttpSession sesion = request.getSession();
-		UsuarioBean usuarioLogeado = (UsuarioBean) sesion.getAttribute("usuario");
-		mensaje.mensajesVistos(idChat, usuarioLogeado.getIdUser());
 	}
 
 	/**

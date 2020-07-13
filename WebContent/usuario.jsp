@@ -76,8 +76,8 @@
 				<div class="col-md-4">
 					<p class="dato" id="frase"><%=((userLogin.getFrase()==null) ? "No hay datos":userLogin.getFrase())%></p>
 				</div>
-				<div class="col-md-4">
-					<a href="mensajes.jsp"><i class="far fa-envelope"></i></a>
+				<div class="col-md-4" id="messages">
+					<i class="far fa-envelope"></i>
 					
 					<h5 class="rounded-circle numero" id="noVistos"></h5>
 					
@@ -97,6 +97,9 @@
 	};
 	console.log(infoUsuario);
 	
+	$("#messages").on("click",function(){
+		window.location.href= "mensajes.jsp";
+	});
 
 	setInterval(() => {
 		$.get ("/SocialMedia/Messages", function(cantidad){

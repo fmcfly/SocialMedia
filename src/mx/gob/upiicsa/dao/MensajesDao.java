@@ -174,7 +174,8 @@ public class MensajesDao {
 		}
 		return cantidad;
 	}
-	public int mensajesVistos ( int idChatSeleccionado, int usuarioLogueado) {
+	
+	public int mensajesVistos(int idChatSeleccionado,int idUsuarioLogueado) {
 		ConexionBaseDatos conexionBD = new ConexionBaseDatos();
 		con = conexionBD.getConexion();
 		int  listo = 0;
@@ -182,10 +183,10 @@ public class MensajesDao {
 		try {
 			ctmt = con.prepareCall(mensajeVisto);
 			ctmt.setInt(1, idChatSeleccionado);
-			ctmt.setInt(2, usuarioLogueado);
+			ctmt.setInt(2, idUsuarioLogueado);
 
 			listo = ctmt.executeUpdate();
-			
+			con.close();
 		}catch(SQLException sqle){
 			System.out.println(sqle.getMessage());
 		}
